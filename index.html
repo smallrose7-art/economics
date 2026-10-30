@@ -1,400 +1,305 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>경제학 OX 퀴즈</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        .perspective-1000 {
-            perspective: 1000px;
-        }
-        .transform-style-3d {
-            transform-style: preserve-3d;
-        }
-        .backface-hidden {
-            backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
-        }
-        .rotate-y-180 {
-            transform: rotateY(180deg);
-        }
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>통합 문서1 - Excel</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='2' fill='%23217346'/%3E%3Cpath d='M4 4l8 8M12 4l-8 8' stroke='white' stroke-width='2'/%3E%3C/svg%3E">
+<style>
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{font-family:"맑은 고딕","Malgun Gothic",Calibri,Arial,sans-serif;font-size:12px;color:#222;background:#fff;display:flex;flex-direction:column;overflow:hidden}
+#titlebar{background:#217346;color:#fff;height:28px;display:flex;align-items:center;justify-content:center;font-size:12px;position:relative}
+#titlebar .l{position:absolute;left:10px;display:flex;gap:10px;opacity:.9}
+#titlebar .r{position:absolute;right:10px;letter-spacing:14px;opacity:.9}
+#tabs{background:#217346;display:flex;gap:2px;padding:0 8px;height:26px;align-items:flex-end}
+#tabs span{padding:4px 12px;color:#fff;font-size:12px;cursor:default}
+#tabs span.on{background:#f3f3f3;color:#217346;font-weight:600}
+#ribbon{background:#f3f3f3;border-bottom:1px solid #d0d0d0;padding:5px 8px;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.btn{font:inherit;background:#fff;border:1px solid #c6c6c6;padding:3px 10px;cursor:pointer;color:#222;min-height:24px}
+.btn:hover{background:#e5f1ea;border-color:#217346}
+.btn:disabled{opacity:.45;pointer-events:none}
+.sep{width:1px;height:20px;background:#cfcfcf;margin:0 4px}
+#fbar{display:flex;align-items:center;border-bottom:1px solid #d0d0d0;background:#fff;height:24px}
+#namebox{width:80px;border-right:1px solid #d0d0d0;text-align:center;line-height:24px;font-size:12px}
+#fx{width:30px;text-align:center;color:#666;font-style:italic;border-right:1px solid #d0d0d0;line-height:24px}
+#fval{flex:1;padding:0 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:24px}
+#sheet{flex:1;overflow:auto;background:#fff;position:relative}
+table{border-collapse:collapse;table-layout:fixed;width:max-content;min-width:100%}
+th,td{border:1px solid #d4d4d4;padding:2px 5px;font-size:12px;line-height:1.45;overflow:hidden;vertical-align:bottom}
+thead th{position:sticky;top:0;background:#e6e6e6;color:#444;font-weight:400;text-align:center;z-index:3;height:20px;padding:0}
+thead tr.h2 th{top:20px;background:#fff;color:#222;font-weight:700;text-align:left;padding:2px 5px;z-index:3;border-bottom:2px solid #999}
+td.rn,th.rn{position:sticky;left:0;width:40px;min-width:40px;background:#e6e6e6;color:#444;text-align:center;padding:0;z-index:2}
+thead th.rn{z-index:4}
+tbody tr.sel td.rn{background:#c6c6c6;color:#217346;font-weight:700}
+td.t{white-space:normal;word-break:keep-all;overflow-wrap:anywhere}
+td.c{text-align:center}
+tbody tr{cursor:cell}
+tbody tr.sel td:not(.rn){background:#e9f3ed}
+tbody tr.sel td.act{outline:2px solid #217346;outline-offset:-2px;background:#fff}
+td.ok{background:#c6efce!important;color:#006100}
+td.ng{background:#ffc7ce!important;color:#9c0006}
+.w1{width:40px}.w2{width:560px}.w3{width:56px}.w4{width:64px}.w5{width:460px}
+#status{background:#f3f3f3;border-top:1px solid #d0d0d0;display:flex;align-items:center;padding:0 10px;height:22px;color:#444;font-size:11px;gap:16px}
+#status .sp{flex:1}
+#sheettabs{background:#f3f3f3;border-top:1px solid #d0d0d0;display:flex;align-items:flex-end;height:26px;padding-left:8px;gap:2px}
+#sheettabs button{font:inherit;border:1px solid #c6c6c6;border-top:none;background:#e6e6e6;padding:3px 14px;cursor:pointer;color:#444}
+#sheettabs button.on{background:#fff;color:#217346;font-weight:700;border-bottom:2px solid #217346}
+#sheettabs .plus{border:none;background:none;font-size:15px;padding:0 10px;color:#666}
+@media(max-width:700px){.w2{width:300px}.w5{width:300px}#titlebar .l,#titlebar .r{display:none}}
+</style>
 </head>
-<body class="bg-slate-100 min-h-screen flex flex-col items-center justify-between p-4 font-sans text-slate-800">
-
-    <header class="w-full max-w-2xl mx-auto mb-4 flex flex-col sm:flex-row justify-between items-center gap-3 bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
-        <div class="flex items-center gap-3">
-            <div class="bg-indigo-600 text-white p-2.5 rounded-xl shadow-sm flex items-center justify-center">
-                <i class="fa-solid fa-book-bookmark text-xl"></i>
-            </div>
-            <div>
-                <h1 class="text-xl font-bold text-slate-900 tracking-tight">경제학 OX 퀴즈</h1>
-                <p class="text-xs text-slate-500">교재 문제 기반 OX 학습기</p>
-            </div>
-        </div>
-
-        <!-- Controls: Shuffle, Reset, CSV Upload, Template Download -->
-        <div class="flex items-center gap-2 w-full sm:w-auto justify-end flex-wrap">
-            <button onclick="shuffleDeck()" title="현재 카드를 무작위로 섞습니다" class="flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-semibold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 rounded-xl transition-all border border-indigo-200 active:scale-95">
-                <i class="fa-solid fa-shuffle"></i>
-                <span>카드 섞기</span>
-            </button>
-            <button onclick="resetToDefaultDeck()" title="기본 문제 덱으로 초기화" class="flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-semibold text-rose-600 bg-rose-50 hover:bg-rose-100 rounded-xl transition-all border border-rose-200 active:scale-95">
-                <i class="fa-solid fa-rotate-left"></i>
-                <span>초기화</span>
-            </button>
-            <button onclick="downloadCSVTemplate()" title="CSV 템플릿 다운로드" class="flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition-all border border-slate-200">
-                <i class="fa-solid fa-file-csv text-indigo-600"></i>
-                <span>템플릿</span>
-            </button>
-            <label for="csvFileInput" class="flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 active:scale-95 rounded-xl cursor-pointer shadow-sm transition-all">
-                <i class="fa-solid fa-file-import"></i>
-                <span>CSV 업로드</span>
-            </label>
-            <input type="file" id="csvFileInput" accept=".csv, .tsv, .txt" class="hidden" onchange="handleCSVUpload(event)">
-        </div>
-    </header>
-
-    <main class="w-full max-w-2xl mx-auto flex-1 flex flex-col justify-center">
-        
-        <!-- Filter & Progress Container -->
-        <div class="mb-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-200 flex flex-col gap-3">
-            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-filter text-xs text-indigo-500"></i>
-                    <span class="text-xs font-bold text-slate-600">필터:</span>
-                </div>
-                <div class="flex items-center gap-1.5 overflow-x-auto text-xs font-medium">
-                    <button id="filterAll" onclick="setFilter('ALL')" class="px-3 py-1 rounded-lg bg-indigo-50 text-indigo-600 font-bold border border-indigo-200 transition-all">전체 (<span id="countAll">0</span>)</button>
-                    <button id="filterIncorrect" onclick="setFilter('INCORRECT')" class="px-3 py-1 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 border border-slate-200 transition-all">틀린 지문 (<span id="countIncorrect">0</span>)</button>
-                    <button id="filterUnanswered" onclick="setFilter('UNANSWERED')" class="px-3 py-1 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 border border-slate-200 transition-all">미풀이 (<span id="countUnanswered">0</span>)</button>
-                </div>
-            </div>
-
-            <!-- Progress Info -->
-            <div class="flex justify-between items-center">
-                <span id="progressText" class="text-sm font-semibold text-slate-700">0 / 0</span>
-                <span id="resultBadge" class="hidden text-xs font-bold px-3 py-1 rounded-full shadow-sm"></span>
-            </div>
-
-            <!-- Progress Bar -->
-            <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden border border-slate-200">
-                <div id="progressBar" class="bg-indigo-600 h-full w-0 transition-all duration-300 rounded-full"></div>
-            </div>
-        </div>
-
-        <div class="perspective-1000 w-full h-80 cursor-pointer my-2" id="cardContainer">
-            <div id="flashcard" class="relative w-full h-full transform-style-3d transition-transform duration-500 rounded-3xl shadow-lg border border-slate-200/80 bg-white">
-                
-                <!-- Front Side -->
-                <div class="absolute inset-0 w-full h-full backface-hidden p-6 sm:p-8 flex flex-col justify-between items-center text-center bg-white rounded-3xl">
-                    <div class="flex justify-between items-center w-full">
-                        <span class="text-xs font-bold tracking-wider text-indigo-600 uppercase bg-indigo-50 border border-indigo-100 px-3 py-1 rounded-full">지문</span>
-                        <span id="cardBadge" class="text-xs text-slate-400 font-medium"></span>
-                    </div>
-                    
-                    <p id="articleText" class="text-base sm:text-lg font-semibold text-slate-800 break-keep leading-relaxed my-auto max-h-48 overflow-y-auto no-scrollbar w-full px-2">
-                        질문을 불러오는 중입니다...
-                    </p>
-                    
-                    <div class="flex items-center gap-1.5 text-xs text-slate-400 bg-slate-50 px-3 py-1.5 rounded-full border border-slate-100">
-                        <i class="fa-solid fa-rotate text-indigo-400"></i>
-                        <span>카드를 클릭하면 정답과 해설이 뒤집힙니다</span>
-                    </div>
-                </div>
-
-                <!-- Back Side -->
-                <div class="absolute inset-0 w-full h-full backface-hidden rotate-y-180 p-6 sm:p-8 flex flex-col justify-between items-center text-center bg-slate-900 text-white rounded-3xl shadow-inner">
-                    <div class="flex flex-col items-center gap-1">
-                        <span class="text-xs font-bold tracking-wider text-slate-400 uppercase bg-slate-800 px-3 py-1 rounded-full border border-slate-700">정답 해설</span>
-                        <div id="correctAnswerDisplay" class="text-3xl font-black mt-1"></div>
-                    </div>
-                    
-                    <div class="overflow-y-auto max-h-36 my-auto w-full px-2 no-scrollbar">
-                        <p id="reasonText" class="text-sm sm:text-base text-slate-200 leading-relaxed break-keep font-medium"></p>
-                    </div>
-                    
-                    <div class="flex items-center gap-1.5 text-xs text-slate-400 bg-slate-800 px-3 py-1.5 rounded-full border border-slate-700">
-                        <i class="fa-solid fa-rotate text-slate-400"></i>
-                        <span>카드를 클릭하면 지문으로 돌아갑니다</span>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-        <!-- OX Answer Buttons -->
-        <div class="grid grid-cols-2 gap-4 mt-4">
-            <button id="btnAnswerO" onclick="submitAnswer('O')" class="py-4 bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-white font-extrabold text-2xl rounded-2xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2">
-                <i class="fa-regular fa-circle text-2xl"></i>
-                <span>맞음 (O)</span>
-            </button>
-            <button id="btnAnswerX" onclick="submitAnswer('X')" class="py-4 bg-rose-500 hover:bg-rose-600 active:scale-95 text-white font-extrabold text-2xl rounded-2xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2">
-                <i class="fa-solid fa-xmark text-2xl"></i>
-                <span>틀림 (X)</span>
-            </button>
-        </div>
-
-        <!-- Navigation Buttons -->
-        <div class="flex justify-between items-center mt-4 gap-4">
-            <button id="btnPrev" onclick="prevCard()" class="flex-1 py-3 bg-white border border-slate-300 hover:bg-slate-50 active:scale-95 text-slate-700 font-bold rounded-xl text-sm shadow-sm transition-all disabled:opacity-40 disabled:pointer-events-none flex items-center justify-center gap-2">
-                <i class="fa-solid fa-chevron-left"></i>
-                <span>이전 카드</span>
-            </button>
-            <button id="btnResetCurrent" onclick="resetCurrentCardState()" class="px-3 py-3 bg-slate-200 hover:bg-slate-300 active:scale-95 text-slate-600 font-semibold rounded-xl text-xs shadow-sm transition-all" title="이 카드의 학습 기록 초기화">
-                <i class="fa-solid fa-arrows-rotate"></i>
-            </button>
-            <button id="btnNext" onclick="nextCard()" class="flex-1 py-3 bg-white border border-slate-300 hover:bg-slate-50 active:scale-95 text-slate-700 font-bold rounded-xl text-sm shadow-sm transition-all disabled:opacity-40 disabled:pointer-events-none flex items-center justify-center gap-2">
-                <span>다음 카드</span>
-                <i class="fa-solid fa-chevron-right"></i>
-            </button>
-        </div>
-    </main>
-
-    <footer class="w-full max-w-2xl mx-auto mt-6 text-center text-xs text-slate-400">
-        경제학 OX 퀴즈 &copy; Smart Study App
-    </footer>
-
-    <script>
-        const STORAGE_KEY_DECK = "economics_quiz_deck_v2";
-        const STORAGE_KEY_ANSWERS = "economics_quiz_answers_v2";
+<body>
+<div id="titlebar"><div class="l"><span>&#9776;</span><span>&#8630;</span><span>&#8631;</span></div>통합 문서1 - Excel<div class="r">&#8211;&#9633;&#215;</div></div>
+<div id="tabs"><span>파일</span><span class="on">홈</span><span>삽입</span><span>페이지 레이아웃</span><span>수식</span><span>데이터</span><span>검토</span><span>보기</span></div>
+<div id="ribbon">
+  <button class="btn" onclick="answer('O')" title="O 입력 (키보드 O)">O 입력</button>
+  <button class="btn" onclick="answer('X')" title="X 입력 (키보드 X)">X 입력</button>
+  <button class="btn" onclick="toggleReveal()" title="해설 열기/닫기 (Enter)">해설</button>
+  <button class="btn" onclick="clearAnswer()" title="입력 지우기 (Delete)">지우기</button>
+  <span class="sep"></span>
+  <button class="btn" onclick="move(-1)">&#9650;</button>
+  <button class="btn" onclick="move(1)">&#9660;</button>
+  <span class="sep"></span>
+  <button class="btn" onclick="shuffleDeck()">섞기</button>
+  <button class="btn" onclick="resetToDefaultDeck()">초기화</button>
+  <button class="btn" onclick="downloadCSVTemplate()">양식</button>
+  <label class="btn" for="csvFileInput" style="display:inline-flex;align-items:center">가져오기</label>
+  <input type="file" id="csvFileInput" accept=".csv, .tsv, .txt" style="display:none" onchange="handleCSVUpload(event)">
+</div>
+<div id="fbar"><div id="namebox">B2</div><div id="fx">fx</div><div id="fval"></div></div>
+<div id="sheet">
+<table>
+<colgroup><col class="w1" style="width:40px"><col style="width:40px"><col class="w2" style="width:560px"><col style="width:56px"><col style="width:64px"><col style="width:460px"></colgroup>
+<thead>
+<tr><th class="rn"></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th></tr>
+<tr class="h2"><th class="rn">1</th><th>No</th><th>항목</th><th>입력</th><th>결과</th><th>비고</th></tr>
+</thead>
+<tbody id="tb"></tbody>
+</table>
+</div>
+<div id="sheettabs">
+  <button id="fAll" class="on" onclick="setFilter('ALL')">전체 (<span id="cAll">0</span>)</button>
+  <button id="fInc" onclick="setFilter('INCORRECT')">Sheet2 (<span id="cInc">0</span>)</button>
+  <button id="fUn" onclick="setFilter('UNANSWERED')">Sheet3 (<span id="cUn">0</span>)</button>
+  <button class="plus" disabled>&#65291;</button>
+</div>
+<div id="status"><span>준비</span><span class="sp"></span><span id="stat">개수: 0</span><span>100%</span></div>
+<script>
+        const STORAGE_KEY_DECK = "econ_quiz_deck_v2";
+        const STORAGE_KEY_ANSWERS = "econ_quiz_answers_v2";
 
         // 200개 문항 기본 내장 데이터
         const defaultDeck = [
-            {"id": 1, "article": "[케인즈의 화폐수요이론] 거래적 동기의 화폐수요는 소득수준과 관련이 있다.", "answer": "O", "reason": "거래적 화폐수요로서 거래목적을 위해서 화폐를 수요하는 것으로서 소득이 증가하면 거래규모가 커지면서 거래적 화폐수요도 증가한다."},
-            {"id": 2, "article": "[계산] 본원통화 200, 현금통화비율 0.2, 지급준비율 0.1일 때 통화량 = 800이다.", "answer": "O", "reason": "맞습니다. 통화승수 (1+k)/(k+r)=4 → 800"},
-            {"id": 3, "article": "[계산] 수요곡선 Qd = a - P, 공급곡선 Qs = c + 2P인 시장에서 공급자에게 단위당 24원의 종량세를 부과할 때 소비자가 부담하는 가격 인상분 = 24원이다.", "answer": "X", "reason": "정답은 16원입니다. 소비자 부담 = t×d/(b+d)"},
-            {"id": 4, "article": "[재화 X 의 가격이 상승할 때 나타나는 효과] 재화 X 가 정상재라면 수요량은 감소한다", "answer": "O", "reason": "특정재화의 가격이 상승할 경우 해당 재화가 정상재라면 수요량은 감소한다."},
-            {"id": 5, "article": "[단기총공급곡선] 가격경직성 모형은 기업들이 가격수용자라고 전제한다.", "answer": "X", "reason": "가격경직성 모형은 기업들이 가격수용자가 아니라 가격설정자라고 전제하고 메뉴비용이론을 전제한다."},
-            {"id": 6, "article": "[계산] 빅맥이 미국에서 5달러, 한국에서 5,500원이고 실제 환율이 1500원/달러일 때, 구매력평가설 기준으로 원화는 달러 대비 저평가되어 있다.", "answer": "O", "reason": "맞습니다. PPP환율 1,100원 vs 실제 1500원."},
-            {"id": 7, "article": "[계산] 역수요함수가 P = 38 - 2Q이고 시장가격이 4일 때 소비자잉여 = 289이다.", "answer": "O", "reason": "맞습니다. 균형량 17, ½×(38-4)×17 → 289"},
-            {"id": 8, "article": "[계산] X재와 Y재만 생산하는 국가의 기준연도 가격은 각각 2, 1이고 비교연도 가격은 4, 3이며 비교연도 생산량은 16개, 7개일 때(GDP디플레이터 기준) 물가상승률 = 117.95%이다.", "answer": "O", "reason": "맞습니다. 디플레이터 = 85/39×100 → 117.95%"},
-            {"id": 9, "article": "[계산] 역수요함수가 P = 24 - 1Q이고 시장가격이 8일 때 소비자잉여 = 192이다.", "answer": "X", "reason": "정답은 128입니다. 균형량 16, ½×(24-8)×16"},
-            {"id": 10, "article": "[기업의 시장구조와 행동원리] 독점적 경쟁시장에서 이윤극대화를 추구하는 기업의 장기균형 생산량은 평균비용이 최소가 되 는점이다.", "answer": "X", "reason": "독점적 경쟁기업의 장기균형은 한계수입과 한계비용(장기의 한계비용)이 일치할 때 달성된다."},
-            {"id": 11, "article": "[기업의 시장구조와 행동원리] 꾸르노 (Cournot) 과점시장모델에서 기업 수가 많아질수록 시장전체의 산출량은 증가한다.", "answer": "O", "reason": "꾸르노모형에서 참가사업자가 많아질수록 사업자 수 측면에서 경쟁시장의 구조에 가까워지면서 산출량도 경쟁시장의 산출량에 근접한다."},
-            {"id": 12, "article": "[계산] 빅맥이 미국에서 5달러, 한국에서 5,500원이고 실제 환율이 800원/달러일 때, 구매력평가설 기준으로 원화는 달러 대비 저평가되어 있다.", "answer": "X", "reason": "틀립니다. PPP환율 1,100원 vs 실제 800원."},
-            {"id": 13, "article": "[계산] 자본소득분배율이 0.33인 경제에서 기술진보율 2%, 자본증가율 4%, 노동증가율 0%일 때 경제성장률 = 4.33%이다.", "answer": "X", "reason": "정답은 3.33%입니다. g=gA+α·gK+(1-α)·gL"},
-            {"id": 14, "article": "[계산] 폐쇄경제에서 C = 50 + 0.75(Y - T), 투자 50, 정부지출 50, 조세 100일 때 균형국민소득 = 150이다.", "answer": "X", "reason": "정답은 300입니다. Y=(50-0.75×100+50+50)/(1-0.75)"},
-            {"id": 15, "article": "[계산] 빅맥이 미국에서 5달러, 한국에서 5,000원이고 실제 환율이 1300원/달러일 때, 구매력평가설 기준으로 원화는 달러 대비 저평가되어 있다.", "answer": "O", "reason": "맞습니다. PPP환율 1,000원 vs 실제 1300원."},
-            {"id": 16, "article": "[계산] 가격이 500원에서 600원으로 인상되자 수요량이 1,000개에서 600개로 감소하였다(변화율은 변화 전 기준). 수요의 가격탄력성(절댓값) = 2이다.", "answer": "O", "reason": "맞습니다. 가격 20% 상승, 수요량 40% 감소 → 40/20 → 2"},
-            {"id": 17, "article": "[단기총공급곡선] 불완전정보 모형에서 기대 물가수준이 상승하면 단기총공급곡선은 오른쪽으로 이동한다.", "answer": "X", "reason": "불완전정보 모형에서 기대 물가수준이 상승하면 단기총공급곡선은 오른쪽이 아니라 좌상방으로 이동한다."},
-            {"id": 18, "article": "[케인즈 소비함수] 한계소비성향은 0보다 크고 1 보다 작다.", "answer": "O", "reason": "한계소비성향은 소득증가분에서 소비증가분이 차지하는 비중으로서 0 보다 크고 1보다 작다."},
-            {"id": 19, "article": "[계산] X재와 Y재만 생산하는 국가의 기준연도 가격은 각각 1, 1이고 비교연도 가격은 4, 3이며 비교연도 생산량은 7개, 13개일 때(GDP디플레이터 기준) 물가상승률 = 235%이다.", "answer": "O", "reason": "맞습니다. 디플레이터 = 67/20×100 → 235%"},
-            {"id": 20, "article": "[계산] 생산함수가 y = √k, 저축률 0.2, (인구증가율+감가상각률) 0.2인 솔로우 모형에서 균제상태 1인당 자본량 = 0.5이다.", "answer": "X", "reason": "정답은 1입니다. s√k=(n+δ)k → k=(s/(n+δ))²"},
-            {"id": 21, "article": "[계산] 완전경쟁기업의 총비용함수가 TC = Q² + 20이고 시장가격이 10일 때 이윤극대화 시 이윤 = 25이다.", "answer": "X", "reason": "정답은 5입니다. MC=2Q=P → Q=5, 이윤=10×5-25-20"},
-            {"id": 22, "article": "[원점에 대해 오목한 생산가능곡선] 원점에 대해 볼록한 사회무차별곡선이 주어진다면 생산가능곡선 선상의 한 점에서 최적의 생산 수준이 결정된다", "answer": "O", "reason": "사회적 최적 수준의 생산은 생산제약 하에서 사회후생을 극대화할 때 달성되는데, 이를 기하적으로 나타내 면 사회무차별곡선과 생산가능곡선이 역할 때가 된다."},
-            {"id": 23, "article": "[계산] X재와 Y재만 생산하는 국가의 기준연도 가격은 각각 3, 3이고 비교연도 가격은 3, 4이며 비교연도 생산량은 12개, 8개일 때(GDP디플레이터 기준) 물가상승률 = 13.33%이다.", "answer": "O", "reason": "맞습니다. 디플레이터 = 68/60×100 → 13.33%"},
-            {"id": 24, "article": "[계산] 1시간당 A국은 X재 2개 또는 Y재 5개, B국은 X재 4개 또는 Y재 7개를 생산할 수 있다. A국은 X재 생산에 비교우위를 갖는다.", "answer": "X", "reason": "틀립니다. X재 기회비용: A국 2.5Y, B국 1.75Y."},
-            {"id": 25, "article": "[계산] 수요곡선이 Qd = 62 - 2P, 공급곡선이 Qs = -19 + P일 때 균형가격 = 27원이다.", "answer": "O", "reason": "맞습니다. 62-2P = -19+1P → P=27 → 27원"},
-            {"id": 26, "article": "[독점적 경쟁시장] 수많은 공급자가 가격수용자로 이동한다.", "answer": "X", "reason": "독점적 경쟁시장 내의 기업들은 조금씩 차별화된 상품을 생산하고 있으며 개별기업은 어느 정도의 독점력 울 보유하면서 일정한 범위 내에서 시장을 지배하고 있다."},
-            {"id": 27, "article": "[계산] 생산함수가 y = √k, 저축률 0.2, (인구증가율+감가상각률) 0.04인 솔로우 모형에서 균제상태 1인당 자본량 = 25이다.", "answer": "O", "reason": "맞습니다. s√k=(n+δ)k → k=(s/(n+δ))² → 25"},
-            {"id": 28, "article": "[경제성장이론] 솔로우 경제성장 모형에서 균제상태에 있으면, 총자본스톡 증가율과 인구증가율이 같다.", "answer": "O", "reason": "솔로우모형의 균제상태에서는 1 인당 자본, 1 인당 생산 모두 불변이며 1 인당 자본, 1 인당 생산의 증가율이 모두 0 이다."},
-            {"id": 29, "article": "[계산] 완전경쟁기업의 총비용함수가 TC = Q² + 5이고 시장가격이 10일 때 이윤극대화 시 이윤 = 20이다.", "answer": "O", "reason": "맞습니다. MC=2Q=P → Q=5, 이윤=10×5-25-5 → 20"},
-            {"id": 30, "article": "[경제성장이론] 솔로우 경제성장 모형에서 인구증가율이 감소하면 균제상태에서의 1 인당 소득은 감소한다.", "answer": "X", "reason": "인구증가율이 하락하여 1 인당 필요투자선이 하방이동하면, 균제상태에서 1 인당 자본이 증가한다."},
-            {"id": 31, "article": "[계산] 독점기업의 역수요함수가 P = 47 - 2Q, 한계비용이 7로 일정할 때 독점이윤(고정비용 없음) = 400이다.", "answer": "X", "reason": "정답은 200입니다. P=27, Q=10, (P-MC)×Q"},
-            {"id": 32, "article": "[계산] 2년 후 7,200원을 받는 약속어음의 현재가치(연 할인율 20%, 복리) 현재가치 = 4,320원이다.", "answer": "X", "reason": "정답은 5,000원입니다. 7,200/(1+0.2)^2"},
-            {"id": 33, "article": "[계산] 수요함수가 Q = 120 - 4P일 때, P = 20에서 수요의 가격탄력성(절댓값) = 0.5이다.", "answer": "X", "reason": "정답은 2입니다. 4×20/40"},
-            {"id": 34, "article": "[계산] 독점기업의 역수요함수가 P = 23 - 2Q, 한계비용이 7로 일정할 때 이윤극대화 생산량 = 8이다.", "answer": "X", "reason": "정답은 4입니다. MR=23-4Q=7"},
-            {"id": 35, "article": "[계산] 1년 후 1,050원을 받는 약속어음의 현재가치(연 할인율 5%, 복리) 현재가치 = 1,050원이다.", "answer": "X", "reason": "정답은 1,000원입니다. 1,050/(1+0.05)^1"},
-            {"id": 36, "article": "고정환율제도에서 환율이 기초경제여건에서 괴리되면 외환투기가 발생할 수 있다.", "answer": "O", "reason": "고정환율제도에서는 현재 고정되어 있는 환율이 기초경제여건을 반영하지 못한 경우 정상적인 환율에서 괴리되어 있기 때문에 이를 이용한 외환을 통한 투기가 발생하게 된다."},
-            {"id": 37, "article": "[계산] 가격이 500원에서 750원으로 인상되자 수요량이 400개에서 240개로 감소하였다(변화율은 변화 전 기준). 수요의 가격탄력성(절댓값) = 0.8이다.", "answer": "O", "reason": "맞습니다. 가격 50% 상승, 수요량 40% 감소 → 40/50 → 0.8"},
-            {"id": 38, "article": "[계산] 수요함수가 Q = 60 - 2P일 때, P = 5에서 수요의 가격탄력성(절댓값) = 0.2이다.", "answer": "O", "reason": "맞습니다. 2×5/50 → 0.2"},
-            {"id": 39, "article": "[기업의 시장구조와 행동원리] 완전경쟁기업의 이윤극대화 산출량은 한계수입과 한계비용이 일치하는 점에서 결정된다.", "answer": "O", "reason": "경쟁기업의 단기 이윤극대화 조건은 가격과 한계비용이 일치할 때 달성된다."},
-            {"id": 40, "article": "[계산] 1시간당 A국은 X재 6개 또는 Y재 8개, B국은 X재 3개 또는 Y재 2개를 생산할 수 있다. A국은 X재 생산에 비교우위를 갖는다.", "answer": "X", "reason": "틀립니다. X재 기회비용: A국 1.33Y, B국 0.67Y."},
-            {"id": 41, "article": "[필립스(Ph i ll ips)곡선] 자연실업률 가설은 장기필립스곡선이 우상향하을 설명한다.", "answer": "X", "reason": "자연실업률가설에 따르면 장기에는 실업률이 다시 종전의 자연실업률 수준으로 되돌아가게 되므로 장기에 립스곡선은 수직이 된다."},
-            {"id": 42, "article": "양국 간 생산요소의 이동이 가능하다는 가정에 기반을 둔다.", "answer": "X", "reason": "헥셔 —올린 이론에 의하면 양국 간 생산요소의 이동은 불가능하다."},
-            {"id": 43, "article": "[계산] 한계소비성향이 0.75인 경제(소득세 없음)에서 정액세가 20 감소하면 균형국민소득 증가분 = 30이다.", "answer": "X", "reason": "정답은 60입니다. 조세승수 c/(1-c)×20"},
-            {"id": 44, "article": "[계산] 가격이 500원에서 750원으로 인상되자 수요량이 100개에서 95개로 감소하였다(변화율은 변화 전 기준). 수요의 가격탄력성(절댓값) = 0.6이다.", "answer": "X", "reason": "정답은 0.1입니다. 가격 50% 상승, 수요량 5% 감소 → 5/50"},
-            {"id": 45, "article": "소비자가 차입 제약에 직면하는 이 정리는 성립되지 않는다.", "answer": "O", "reason": "차입제약이 있어서 차입이 불완전한 상황이다 소비자는 유동성제약을 겪게 되어 현재 조세감면을 저축에 활용하는 것이 아니라 소비에 즉각 쓰는 상황이 되어 리카도 동등성 정리가 성립하지 않게 된다."},
-            {"id": 46, "article": "[계산] 15세 이상 인구 1000명 중 취업자 450명, 실업자 100명일 때 경제활동참가율 = 55%이다.", "answer": "O", "reason": "맞습니다. (450+100)/1000×100 → 55%"},
-            {"id": 47, "article": "[계산] 본원통화 500, 현금통화비율 0.2, 지급준비율 0.1일 때 통화량 = 5,000이다.", "answer": "X", "reason": "정답은 2,000입니다. 통화승수 (1+k)/(k+r)=4"},
-            {"id": 48, "article": "[계산] 본원통화 500, 현금통화비율 0.2, 지급준비율 0.1일 때 통화량 = 1666.67이다.", "answer": "X", "reason": "정답은 2,000입니다. 통화승수 (1+k)/(k+r)=4"},
-            {"id": 49, "article": "[계산] 한계소비성향이 0.75, 소득세율이 0%인 폐쇄경제에서 정부지출이 100 증가하면 균형국민소득 증가분 = 400이다.", "answer": "O", "reason": "맞습니다. 승수 1/(1-c(1-t)) = 4 → 400"},
-            {"id": 50, "article": "[계산] 가격이 200원에서 220원으로 인상되자 수요량이 1,000개에서 600개로 감소하였다(변화율은 변화 전 기준). 수요의 가격탄력성(절댓값) = 8이다.", "answer": "X", "reason": "정답은 4입니다. 가격 10% 상승, 수요량 40% 감소 → 40/10"},
-            {"id": 51, "article": "[계산] 빅맥이 미국에서 5달러, 한국에서 6,000원이고 실제 환율이 1300원/달러일 때, 구매력평가설 기준으로 원화는 달러 대비 저평가되어 있다.", "answer": "O", "reason": "맞습니다. PPP환율 1,200원 vs 실제 1300원."},
-            {"id": 52, "article": "[계산] 독점기업의 역수요함수가 P = 22 - 1Q, 한계비용이 6로 일정할 때 독점이윤(고정비용 없음) = 112이다.", "answer": "X", "reason": "정답은 64입니다. P=14, Q=8, (P-MC)×Q"},
-            {"id": 53, "article": "[계산] 폐쇄경제에서 C = 50 + 0.8(Y - T), 투자 150, 정부지출 50, 조세 100일 때 균형국민소득 = 850이다.", "answer": "O", "reason": "맞습니다. Y=(50-0.8×100+150+50)/(1-0.8) → 850"},
-            {"id": 54, "article": "[계산] 15세 이상 인구 5000명 중 취업자 1820명, 실업자 550명일 때 실업률 = 23.21%이다.", "answer": "O", "reason": "맞습니다. 550/(1820+550)×100 → 23.21%"},
-            {"id": 55, "article": "고정환율제도에 비해 자유변동환율제도에서 통화정책을 경기조절수단으로 사용하기가 더 어렵다.", "answer": "X", "reason": "고정환율제도에서는 환율변화 압력이 있더라도 환율을 일정하게 유지하기 위해서 중앙은행이 외환시장에 개입하여 된다."},
-            {"id": 56, "article": "[계산] 수요곡선 Qd = a - 2P, 공급곡선 Qs = c + P인 시장에서 공급자에게 단위당 12원의 종량세를 부과할 때 소비자가 부담하는 가격 인상분 = 4원이다.", "answer": "O", "reason": "맞습니다. 소비자 부담 = t×d/(b+d) → 4원"},
-            {"id": 57, "article": "[조세부과와 공공요금 책정의 원칙] 수익자부담의 원칙에 따르면 지하철 운영에서 적자가 발생하면 지하철 요금을 인상해야 한다.", "answer": "O", "reason": "수익자부담의 원칙에 따르면 공공서비스나 정부정책으로부터 많은 편익을 얻는 경우에는 더 많은 세금을 부담해야 한다."},
-            {"id": 58, "article": "[계산] 가격이 200원에서 300원으로 인상되자 수요량이 400개에서 360개로 감소하였다(변화율은 변화 전 기준). 수요의 가격탄력성(절댓값) = 5이다.", "answer": "X", "reason": "정답은 0.2입니다. 가격 50% 상승, 수요량 10% 감소 → 10/50"},
-            {"id": 59, "article": "[계산] 자본소득분배율이 0.33인 경제에서 기술진보율 3%, 자본증가율 6%, 노동증가율 0%일 때 경제성장률 = 5%이다.", "answer": "O", "reason": "맞습니다. g=gA+α·gK+(1-α)·gL → 5%"},
-            {"id": 60, "article": "[계산] 한계소비성향이 0.8, 소득세율이 20%인 폐쇄경제에서 정부지출이 100 증가하면 균형국민소득 증가분 = 20이다.", "answer": "X", "reason": "정답은 277.78입니다. 승수 1/(1-c(1-t)) = 2.78"},
-            {"id": 61, "article": "[계산] 역수요함수가 P = 20 - 2Q이고 시장가격이 10일 때 소비자잉여 = 50이다.", "answer": "X", "reason": "정답은 25입니다. 균형량 5, ½×(20-10)×5"},
-            {"id": 62, "article": "[계산] 역수요함수가 P = 40 - 2Q이고 시장가격이 6일 때 소비자잉여 = 578이다.", "answer": "X", "reason": "정답은 289입니다. 균형량 17, ½×(40-6)×17"},
-            {"id": 63, "article": "양국 물가상승률의 차이가 명목환율의 변화율에 영향을 준다.", "answer": "O", "reason": "P 구매력 평가설에 의하면 환율 e = —T, 즉 자국물가와 외국물가의 비율이 된다."},
-            {"id": 64, "article": "[계산] 15세 이상 인구 2000명 중 취업자 810명, 실업자 130명일 때 경제활동참가율 = 47%이다.", "answer": "O", "reason": "맞습니다. (810+130)/2000×100 → 47%"},
-            {"id": 65, "article": "[계산] 1시간당 A국은 X재 5개 또는 Y재 3개, B국은 X재 4개 또는 Y재 3개를 생산할 수 있다. A국은 X재 생산에 비교우위를 갖는다.", "answer": "O", "reason": "맞습니다. X재 기회비용: A국 0.6Y, B국 0.75Y."},
-            {"id": 66, "article": "[계산] X재와 Y재만 생산하는 국가의 기준연도 가격은 각각 2, 3이고 비교연도 가격은 5, 4이며 비교연도 생산량은 8개, 14개일 때(GDP디플레이터 기준) 물가상승률 = 165.52%이다.", "answer": "X", "reason": "정답은 65.52%입니다. 디플레이터 = 96/58×100"},
-            {"id": 67, "article": "[계산] 수요곡선이 Qd = 52 - 2P, 공급곡선이 Qs = -2 + P일 때 균형가격 = 18원이다.", "answer": "O", "reason": "맞습니다. 52-2P = -2+1P → P=18 → 18원"},
-            {"id": 68, "article": "[사람들의 소비행태 이론들] 생애주기이론에 따르면 개인의 저축은 나이에 따라 U자형으로 나타날 가능성이 크다.", "answer": "X", "reason": "평생소득이론에 의하면 소득은 일생을 거치면서 유년기, 청장년기, 노년기에 따라서 변화한다."},
-            {"id": 69, "article": "[인플레이션] 디스인플레이션 (di si nfl ati on) 상황에서는 물가상승률이 감소하고 있지만 여전히 물가는 상승 한다.", "answer": "O", "reason": "인플레이션이 물가수준이 지속적으로 \"상승\" 하는 현상을 의미한다면, 반면 디플레이션 (defl ati on) 은 물가 수준이 지속적으로 \"하락\"하는 현상을 의미한다."},
-            {"id": 70, "article": "[계산] 한계소비성향이 0.6인 경제(소득세 없음)에서 정액세가 20 감소하면 균형국민소득 증가분 = 30이다.", "answer": "O", "reason": "맞습니다. 조세승수 c/(1-c)×20 → 30"},
-            {"id": 71, "article": "[계산] X재와 Y재만 생산하는 국가의 기준연도 가격은 각각 1, 3이고 비교연도 가격은 4, 4이며 비교연도 생산량은 6개, 7개일 때(GDP디플레이터 기준) 물가상승률 = 97.59%이다.", "answer": "X", "reason": "정답은 92.59%입니다. 디플레이터 = 52/27×100"},
-            {"id": 72, "article": "[계산] 가격이 500원에서 600원으로 인상되자 수요량이 400개에서 360개로 감소하였다(변화율은 변화 전 기준). 수요의 가격탄력성(절댓값) = 2이다.", "answer": "X", "reason": "정답은 0.5입니다. 가격 20% 상승, 수요량 10% 감소 → 10/20"},
-            {"id": 73, "article": "[계산] 본원통화 500, 현금통화비율 0.2, 지급준비율 0.05일 때 통화량 = 2,400이다.", "answer": "O", "reason": "맞습니다. 통화승수 (1+k)/(k+r)=4.8 → 2,400"},
-            {"id": 74, "article": "[계산] Y재 가격이 10% 상승하자 X재 수요량이 4% 증가하였다. 교차탄력성 = 0.8이다.", "answer": "X", "reason": "정답은 0.4입니다. 4/10 (양수: 대체재)"},
-            {"id": 75, "article": "[계산] 한계소비성향이 0.8, 소득세율이 20%인 폐쇄경제에서 정부지출이 50 증가하면 균형국민소득 증가분 = 138.89이다.", "answer": "O", "reason": "맞습니다. 승수 1/(1-c(1-t)) = 2.78 → 138.89"},
-            {"id": 76, "article": "[계산] 역수요함수가 P = 25 - 1Q이고 시장가격이 5일 때 소비자잉여 = 200이다.", "answer": "O", "reason": "맞습니다. 균형량 20, ½×(25-5)×20 → 200"},
-            {"id": 77, "article": "[계산] Y재 가격이 5% 상승하자 X재 수요량이 6% 증가하였다. 교차탄력성 = 2.4이다.", "answer": "X", "reason": "정답은 1.2입니다. 6/5 (양수: 대체재)"},
-            {"id": 78, "article": "편익의 계산에 서 도로건설을 통해 다른 지 역의 서 비 스 업이 이전해 오고 인구가 유입되는 이를 적인 효과는 배제하는 것이 타당하다.", "answer": "O", "reason": "편익의 계산에서 도로건설을 통해 다른 지역의 서비스를이 이전해 오고 인구가 유입되는 이차적인 효과는 배 못하는 것이 타당하다."},
-            {"id": 79, "article": "[계산] 완전경쟁기업의 총비용함수가 TC = Q² + 20이고 시장가격이 16일 때 이윤극대화 시 이윤 = 64이다.", "answer": "X", "reason": "정답은 44입니다. MC=2Q=P → Q=8, 이윤=16×8-64-20"},
-            {"id": 80, "article": "[계산] 한계소비성향이 0.75인 경제(소득세 없음)에서 정액세가 100 감소하면 균형국민소득 증가분 = 300이다.", "answer": "O", "reason": "맞습니다. 조세승수 c/(1-c)×100 → 300"},
-            {"id": 81, "article": "[계산] 빅맥이 미국에서 5달러, 한국에서 4,500원이고 실제 환율이 800원/달러일 때, 구매력평가설 기준으로 원화는 달러 대비 저평가되어 있다.", "answer": "X", "reason": "틀립니다. PPP환율 900원 vs 실제 800원."},
-            {"id": 82, "article": "[계산] 자본소득분배율이 0.4인 경제에서 기술진보율 2%, 자본증가율 6%, 노동증가율 3%일 때 경제성장률 = 6.2%이다.", "answer": "O", "reason": "맞습니다. g=gA+α·gK+(1-α)·gL → 6.2%"},
-            {"id": 83, "article": "[조세부과와 공공요금 책정의 원칙] 수평적 평등의 원칙에 따르면 동일한 소득이라도 소득의 종류에 따라 세금이 달라진다.", "answer": "X", "reason": "수평적 공평성 (hori zontal equity)이란 똑같은 조세부담능력을 가진 사람은 똑같은 조세부담을 져야 한다 는 원칙으로 이에 따르면 동일한 소득이 경우 똑같은 조세부담능력으로 보고 같은 세부담을 져야 하므로 세금은 같다."},
-            {"id": 84, "article": "[계산] Y재 가격이 20% 상승하자 X재 수요량이 15% 증가하였다. 교차탄력성 = 1.33이다.", "answer": "X", "reason": "정답은 0.75입니다. 15/20 (양수: 대체재)"},
-            {"id": 85, "article": "[계산] 자본소득분배율이 0.33인 경제에서 기술진보율 3%, 자본증가율 4%, 노동증가율 3%일 때 경제성장률 = 6.33%이다.", "answer": "O", "reason": "맞습니다. g=gA+α·gK+(1-α)·gL → 6.33%"},
-            {"id": 86, "article": "[계산] 한계소비성향이 0.6, 소득세율이 0%인 폐쇄경제에서 정부지출이 100 증가하면 균형국민소득 증가분 = 250이다.", "answer": "O", "reason": "맞습니다. 승수 1/(1-c(1-t)) = 2.5 → 250"},
-            {"id": 87, "article": "[계산] 한계소비성향이 0.8인 경제(소득세 없음)에서 정액세가 20 감소하면 균형국민소득 증가분 = 16이다.", "answer": "X", "reason": "정답은 80입니다. 조세승수 c/(1-c)×20"},
-            {"id": 88, "article": "[케인즈 소비함수] 소득이 증가할수록 평균소비성향은 증가한다.", "answer": "X", "reason": "평균소비성향은 소득에서 소비가 차지하는 비중으로서 소독증가에 따라서 감소한다."},
-            {"id": 89, "article": "[독점적 경쟁시장] 장기균형에서 평균비용곡선의 최저점보다 더 적은 양을 생산한다.", "answer": "O", "reason": "장기균형은 MR = LMC에서 생산이 이루어지게 되고 가격은 한계비용보다 높다."},
-            {"id": 90, "article": "[계산] 역수요함수가 P = 19 - 1Q이고 시장가격이 5일 때 소비자잉여 = 98이다.", "answer": "O", "reason": "맞습니다. 균형량 14, ½×(19-5)×14 → 98"},
-            {"id": 91, "article": "[계산] 독점기업의 역수요함수가 P = 30 - 1Q, 한계비용이 8로 일정할 때 이윤극대화 생산량 = 22이다.", "answer": "X", "reason": "정답은 11입니다. MR=30-2Q=8"},
-            {"id": 92, "article": "[계산] 1시간당 A국은 X재 8개 또는 Y재 6개, B국은 X재 5개 또는 Y재 5개를 생산할 수 있다. A국은 X재 생산에 비교우위를 갖는다.", "answer": "O", "reason": "맞습니다. X재 기회비용: A국 0.75Y, B국 1Y."},
-            {"id": 93, "article": "[계산] 자본소득분배율이 0.4인 경제에서 기술진보율 3%, 자본증가율 8%, 노동증가율 2%일 때 경제성장률 = 7.4%이다.", "answer": "O", "reason": "맞습니다. g=gA+α·gK+(1-α)·gL → 7.4%"},
-            {"id": 94, "article": "[계산] 완전경쟁기업의 총비용함수가 TC = Q² + 20이고 시장가격이 16일 때 이윤극대화 시 이윤 = 44이다.", "answer": "O", "reason": "맞습니다. MC=2Q=P → Q=8, 이윤=16×8-64-20 → 44"},
-            {"id": 95, "article": "[계산] 수요함수가 Q = 60 - 4P일 때, P = 10에서 수요의 가격탄력성(절댓값) = 0.67이다.", "answer": "X", "reason": "정답은 2입니다. 4×10/20"},
-            {"id": 96, "article": "[계산] 1시간당 A국은 X재 7개 또는 Y재 5개, B국은 X재 4개 또는 Y재 6개를 생산할 수 있다. A국은 X재 생산에 비교우위를 갖는다.", "answer": "O", "reason": "맞습니다. X재 기회비용: A국 0.71Y, B국 1.5Y."},
-            {"id": 97, "article": "[소비이론] 항상소득가설에 따르면 단기적으로 소득 증가는 평균소비성향을 감소시킨다.", "answer": "O", "reason": "단기에 있어서 소득이 증가할 경우, 사람들은 이 중 일부만을 항상소득의 증가로 간주한다."},
-            {"id": 98, "article": "[계산] 폐쇄경제에서 C = 50 + 0.75(Y - T), 투자 100, 정부지출 100, 조세 100일 때 균형국민소득 = 700이다.", "answer": "O", "reason": "맞습니다. Y=(50-0.75×100+100+100)/(1-0.75) → 700"},
-            {"id": 99, "article": "[케인즈의 화폐수요이론] 소득수준이 높아질수록 예비적 동기의 화폐수요는 증가한다.", "answer": "O", "reason": "예비적 화폐수요로서 예상치 못한 지출, 계획되지 않은 지출에 대비하기 위하여 화폐를 보유하며 소득수준 이 높을수록, 예상치 못한 지출에 대비하여 더욱 많은 화폐를 보유할 여유가 있기 때문에 예비적 화폐수요 는 소득과 정의 관계에 있다."},
-            {"id": 100, "article": "[후생경제이론] 차선의 이론에 따르면 점진적 접근방식에 의한 부분적 해결책이 최선은 아닐 수 있다.", "answer": "O", "reason": "차선의 이론에 의하면, 경제전반의 상황을 무시한 채 부분적으로 효율성을 개선하더라도 전체적인 효율성 은 오히려 악화될 수도 있다."},
-            {"id": 101, "article": "[계산] 역수요함수가 P = 16 - 2Q이고 시장가격이 2일 때 소비자잉여 = 56이다.", "answer": "X", "reason": "정답은 49입니다. 균형량 7, ½×(16-2)×7"},
-            {"id": 102, "article": "[필립스(Ph i ll ips)곡선] 1970 년대 석유파동 때 미국의 단기필립스곡선은 왼쪽으로 이동되었다.", "answer": "X", "reason": "1970 년대 석유파동 때 단기필립스곡선은 왼쪽이 아니라 오른쪽으로 이동한 것으로 볼 수 있다."},
-            {"id": 103, "article": "[계산] 본원통화 200, 현금통화비율 0.2, 지급준비율 0.05일 때 통화량 = 960이다.", "answer": "O", "reason": "맞습니다. 통화승수 (1+k)/(k+r)=4.8 → 960"},
-            {"id": 104, "article": "[단기총공급곡선] 가격경직성 모형 (sti cky-pri ce model) 에서 물가수준이 기대 물가수준보다 낮다면 생산량은 자 연산출량 수준보다 높다.", "answer": "X", "reason": "총공급곡선에 의하면, 물가수준이 기대 물가수준보다 낮다면 생산량은 자연산출량 수준보다 낮다."},
-            {"id": 105, "article": "기업 A의 할인율이 상승하면 이 기업의 주식가격은 상승한다.", "answer": "X", "reason": "할인율이 상승하면 이 기업의 주식가격은 하락한다."},
-            {"id": 106, "article": "[계산] 자본소득분배율이 0.5인 경제에서 기술진보율 2%, 자본증가율 4%, 노동증가율 3%일 때 경제성장률 = 5.5%이다.", "answer": "O", "reason": "맞습니다. g=gA+α·gK+(1-α)·gL → 5.5%"},
-            {"id": 107, "article": "[계산] 수요곡선 Qd = a - 3P, 공급곡선 Qs = c + P인 시장에서 공급자에게 단위당 8원의 종량세를 부과할 때 소비자가 부담하는 가격 인상분 = 2원이다.", "answer": "O", "reason": "맞습니다. 소비자 부담 = t×d/(b+d) → 2원"},
-            {"id": 108, "article": "[계산] 폐쇄경제에서 C = 50 + 0.75(Y - T), 투자 50, 정부지출 100, 조세 100일 때 균형국민소득 = 200이다.", "answer": "X", "reason": "정답은 500입니다. Y=(50-0.75×100+50+100)/(1-0.75)"},
-            {"id": 109, "article": "[계산] 수요함수가 Q = 40 - P일 때, P = 20에서 수요의 가격탄력성(절댓값) = 0.5이다.", "answer": "X", "reason": "정답은 1입니다. 1×20/20"},
-            {"id": 110, "article": "[계산] 완전경쟁기업의 총비용함수가 TC = Q² + 5이고 시장가격이 6일 때 이윤극대화 시 이윤 = 18이다.", "answer": "X", "reason": "정답은 4입니다. MC=2Q=P → Q=3, 이윤=6×3-9-5"},
-            {"id": 111, "article": "[계산] 15세 이상 인구 5000명 중 취업자 1400명, 실업자 430명일 때 경제활동참가율 = 28%이다.", "answer": "X", "reason": "정답은 36.6%입니다. (1400+430)/5000×100"},
-            {"id": 112, "article": "[솔로우(Solow) 성장모형] 기술진보 없이 지속적인 성장을 할 수 없다.", "answer": "O", "reason": "기술진보가 발생하여 생산함수가 상방 이동하면, 균제상태에서 1 인당 자본이 증가하고 1 인당 생산이 증가 한다."},
-            {"id": 113, "article": "[계산] 수요곡선이 Qd = 23 - 2P, 공급곡선이 Qs = -4 + P일 때 균형가격 = 9원이다.", "answer": "O", "reason": "맞습니다. 23-2P = -4+1P → P=9 → 9원"},
-            {"id": 114, "article": "[소비이론] 피셔 (I.Fi sher) 의 기간 간 소비선택이론에 따르면 이자율은 소비에 영향을 준다.", "answer": "O", "reason": "피셔 0.Fi sher) 의 기간 간 소비선택이론에 따르면 이자율은 소비에 영향을 준다."},
-            {"id": 115, "article": "[케인즈 소비함수] 소득과 소비의 장기적 관계를 설명할 수 없다.", "answer": "O", "reason": "소비와 소득에 대한 실증분석 결과, 횡단면분석 및 단기시계열분석에서는 소득이 증가하는 경우 평균소득 성향은 감소하고, 장기시계열분석에서는 소득이 크게 증가하여도 평균소비성향이 거의 불변이었다."},
-            {"id": 116, "article": "[계산] 독점기업의 역수요함수가 P = 37 - 2Q, 한계비용이 9로 일정할 때 이윤극대화 생산량 = 9이다.", "answer": "X", "reason": "정답은 7입니다. MR=37-4Q=9"},
-            {"id": 117, "article": "[계산] 15세 이상 인구 1000명 중 취업자 300명, 실업자 100명일 때 실업률 = 25%이다.", "answer": "O", "reason": "맞습니다. 100/(300+100)×100 → 25%"},
-            {"id": 118, "article": "[사람들의 소비행태 이론들] 항상소득이론에 따르면 사람들은 비교적 일정한 수준에서 소비를 유지하고 싶어한다.", "answer": "O", "reason": "항상소득이론은 장기간에 걸친 소득의 흐름을 고려하여 장기평균소득을 구하여 이에 근거하여 소비행위를 결정하고 소비의 균등화를 추구한다."},
-            {"id": 119, "article": "[계산] 빅맥이 미국에서 4달러, 한국에서 4,000원이고 실제 환율이 1500원/달러일 때, 구매력평가설 기준으로 원화는 달러 대비 저평가되어 있다.", "answer": "O", "reason": "맞습니다. PPP환율 1,000원 vs 실제 1500원."},
-            {"id": 120, "article": "[계산] 본원통화 200, 현금통화비율 0.2, 지급준비율 0.1일 때 통화량 = 666.67이다.", "answer": "X", "reason": "정답은 800입니다. 통화승수 (1+k)/(k+r)=4"},
-            {"id": 121, "article": "[계산] X재와 Y재만 생산하는 국가의 기준연도 가격은 각각 3, 4이고 비교연도 가격은 5, 7이며 비교연도 생산량은 17개, 12개일 때(GDP디플레이터 기준) 물가상승률 = 70.71%이다.", "answer": "O", "reason": "맞습니다. 디플레이터 = 169/99×100 → 70.71%"},
-            {"id": 122, "article": "[계산] 수요함수가 Q = 70 - 2P일 때, P = 10에서 수요의 가격탄력성(절댓값) = 0.4이다.", "answer": "O", "reason": "맞습니다. 2×10/50 → 0.4"},
-            {"id": 123, "article": "외국의 양적완화정책으로 외국의 물가가 상승하면, 자국의 실질 순수출이 증가한다.", "answer": "X", "reason": "위®에서 살펴본 바대로, 구매력 평가설이 성립하면 외국의 양적완화정책으로 외국의 물가가 상승하더라 도 실질환율은 불변이다."},
-            {"id": 124, "article": "[경제성장이론] 내생적 성장이론에 따르면 균제상태의 경제성장률은 외생적 기술진보 증가율이다.", "answer": "X", "reason": "내생적 성장이론 중 특히 R&D모형에 의하면, 균제상태의 경제성장률은 외생적 기술진보 증가율이 아니라 내생적으로 결정된 기술진보율이 결정하게 된다."},
-            {"id": 125, "article": "[구매력 평가설] 비교역재 (non-tradable goods) 의 존재가 구매력 평가설의 현실설명력을 떨어뜨리는 요인이 된다.", "answer": "O", "reason": "일물일가의 법칙이 성립하고 장기적으로 물가가 신축적인 상황에서 구매력 평가설이 성립한다고 가정하면, 구매력 평가설에 의한 환율이 이론상 명목환율이 되어야 한다."},
-            {"id": 126, "article": "[재화 X 의 가격이 상승할 때 나타나는 효과] 재화 X 와 대체관계에 있는 재화 Y 의 가격은 하락한다", "answer": "X", "reason": "특정재화의 가격이 상승할 경우 해당 재화에 대한 수요량이 감소하고 그와 대체관계에 있는 재화에 대한 수요가 증가하므로 대체재의 가격이 상승한다."},
-            {"id": 127, "article": "[계산] 3년 후 3,456원을 받는 약속어음의 현재가치(연 할인율 20%, 복리) 현재가치 = 2,880원이다.", "answer": "X", "reason": "정답은 2,000원입니다. 3,456/(1+0.2)^3"},
-            {"id": 128, "article": "양국 간 무역에서 재정거래 (arbitrage) 에 의한 수익을 얻을 수 없다.", "answer": "O", "reason": "무역에 따른 규제, 운송비, 각종 거래비용 등이 없는 상황에서 가격이 신축적인 경우, 국가 간에 무역이 완전히 자유롭다면 동일한 재화에 대한 자국의 가격과 외국의 가격이 같아지는 일물일가의 법칙이 성립하 다."},
-            {"id": 129, "article": "[계산] 한계소비성향이 0.75인 경제(소득세 없음)에서 정액세가 40 감소하면 균형국민소득 증가분 = 30이다.", "answer": "X", "reason": "정답은 120입니다. 조세승수 c/(1-c)×40"},
-            {"id": 130, "article": "[예상보다 높은 인플레이션이 발생할 경우 나타나는 효과] 채무자는 이익을 보지만 채권자는 손해를 보게 된다.", "answer": "O", "reason": "예상보다 높은 인플레이션으로 인하여 부와 소득의 재분배가 나타나는데 특히 인플레이션으로 인하여 화폐 가치가 하락함에 따라 고정된 채무액을 변제받는 채권자는 손해를 보고, 반대로 고정된 채무액을 변화하는 채무자는 이익을 보게 된다"},
-            {"id": 131, "article": "[계산] Y재 가격이 10% 상승하자 X재 수요량이 15% 증가하였다. 교차탄력성 = 1.5이다.", "answer": "O", "reason": "맞습니다. 15/10 (양수: 대체재) → 1.5"},
-            {"id": 132, "article": "[계산] 수요곡선 Qd = a - P, 공급곡선 Qs = c + 3P인 시장에서 공급자에게 단위당 16원의 종량세를 부과할 때 소비자가 부담하는 가격 인상분 = 4원이다.", "answer": "X", "reason": "정답은 12원입니다. 소비자 부담 = t×d/(b+d)"},
-            {"id": 133, "article": "[계산] 15세 이상 인구 1000명 중 취업자 280명, 실업자 70명일 때 경제활동참가율 = 35%이다.", "answer": "O", "reason": "맞습니다. (280+70)/1000×100 → 35%"},
-            {"id": 134, "article": "비용 계산 시 사회적 기 회비용보다는 실제 지 불변는 회계적 비용을 고려해야 한다.", "answer": "X", "reason": "비용 계산 시 실제 지불되는 회계적 비용보다는 사회적 기회비용을 고려 해야 한다."},
-            {"id": 135, "article": "[계산] 생산함수가 y = √k, 저축률 0.4, (인구증가율+감가상각률) 0.05인 솔로우 모형에서 균제상태 1인당 자본량 = 64이다.", "answer": "O", "reason": "맞습니다. s√k=(n+δ)k → k=(s/(n+δ))² → 64"},
-            {"id": 136, "article": "[계산] 수요함수가 Q = 25 - P일 때, P = 5에서 수요의 가격탄력성(절댓값) = 4이다.", "answer": "X", "reason": "정답은 0.25입니다. 1×5/20"},
-            {"id": 137, "article": "[원점에 대해 오목한 생산가능곡선] 생산가능곡선의 외부에 위치히는 점은 비효율적인 생산점인 반면, 내부에 위치하는 점은 실현 이 불가능한 생산점이다.", "answer": "X", "reason": "생산가능곡선의 외부에 위치하는 점은 실현이 불가능한 생산점이며, 내부에 위치하는 점은 비효율적인 생 산점이다."},
-            {"id": 138, "article": "[계산] 수요곡선이 Qd = 26 - P, 공급곡선이 Qs = -34 + 2P일 때 균형가격 = 19원이다.", "answer": "X", "reason": "정답은 20원입니다. 26-1P = -34+2P → P=20"},
-            {"id": 139, "article": "[계산] X재와 Y재만 생산하는 국가의 기준연도 가격은 각각 2, 1이고 비교연도 가격은 5, 2이며 비교연도 생산량은 5개, 9개일 때(GDP디플레이터 기준) 물가상승률 = 126.32%이다.", "answer": "O", "reason": "맞습니다. 디플레이터 = 43/19×100 → 126.32%"},
-            {"id": 140, "article": "[계산] 독점기업의 역수요함수가 P = 19 - 1Q, 한계비용이 5로 일정할 때 이윤극대화 생산량 = 7이다.", "answer": "O", "reason": "맞습니다. MR=19-2Q=5 → 7"},
-            {"id": 141, "article": "[솔로우(Solow) 성장모형] 정상상태 (steady state) 에서 인구증가율의 변화는 1 인당 경제성장률에 영향을 미치지 않는다.", "answer": "O", "reason": "균제상태에서는 1 인당 자본, 1 인당 생산, 1 인당 저축, 1 인당 투자 모두 불변이다."},
-            {"id": 142, "article": "[계산] 폐쇄경제에서 C = 100 + 0.8(Y - T), 투자 50, 정부지출 50, 조세 50일 때 균형국민소득 = 1,000이다.", "answer": "X", "reason": "정답은 800입니다. Y=(100-0.8×50+50+50)/(1-0.8)"},
-            {"id": 143, "article": "[계산] 3년 후 2315.25원을 받는 약속어음의 현재가치(연 할인율 5%, 복리) 현재가치 = 1967.96원이다.", "answer": "X", "reason": "정답은 2,000원입니다. 2315.25/(1+0.05)^3"},
-            {"id": 144, "article": "[예상보다 높은 인플레이션이 발생할 경우 나타나는 효과] 고정된 화폐소득을 얻는 봉급생활자는 불리해진다.", "answer": "O", "reason": "인플레이션으로 인하여 화폐가치가 하락함에 따라 고정된 화폐소득을 얻는 봉급생활자는 불리해진다."},
-            {"id": 145, "article": "[계산] 한계소비성향이 0.8, 소득세율이 25%인 폐쇄경제에서 정부지출이 50 증가하면 균형국민소득 증가분 = 200이다.", "answer": "X", "reason": "정답은 125입니다. 승수 1/(1-c(1-t)) = 2.5"},
-            {"id": 146, "article": "[계산] 한계소비성향이 0.75인 경제(소득세 없음)에서 정액세가 20 감소하면 균형국민소득 증가분 = 80이다.", "answer": "X", "reason": "정답은 60입니다. 조세승수 c/(1-c)×20"},
-            {"id": 147, "article": "실업자가 구직을 단념하여 비경제활동인구로 전환되면 실업률이 감소한다.", "answer": "O", "reason": "고령자, 환자, 주부, 학생, 실망실업자(구직단념자) 등 비경제활동인구는 실업자가 아니므로 실업률 측 앞에서 제외된다."},
-            {"id": 148, "article": "[계산] 완전경쟁기업의 총비용함수가 TC = Q² + 20이고 시장가격이 10일 때 이윤극대화 시 이윤 = 5이다.", "answer": "O", "reason": "맞습니다. MC=2Q=P → Q=5, 이윤=10×5-25-20 → 5"},
-            {"id": 149, "article": "[계산] 완전경쟁기업의 총비용함수가 TC = Q² + 10이고 시장가격이 20일 때 이윤극대화 시 이윤 = 100이다.", "answer": "X", "reason": "정답은 90입니다. MC=2Q=P → Q=10, 이윤=20×10-100-10"},
-            {"id": 150, "article": "[계산] 완전경쟁기업의 총비용함수가 TC = Q² + 5이고 시장가격이 8일 때 이윤극대화 시 이윤 = 11이다.", "answer": "O", "reason": "맞습니다. MC=2Q=P → Q=4, 이윤=8×4-16-5 → 11"},
-            {"id": 151, "article": "[계산] 수요곡선이 Qd = 13 - P, 공급곡선이 Qs = -3 + P일 때 균형거래량 = 5이다.", "answer": "O", "reason": "맞습니다. P=8를 대입하면 Q=13-1×8=5 → 5"},
-            {"id": 152, "article": "[계산] 자본소득분배율이 0.5인 경제에서 기술진보율 1%, 자본증가율 8%, 노동증가율 0%일 때 경제성장률 = 5%이다.", "answer": "O", "reason": "맞습니다. g=gA+α·gK+(1-α)·gL → 5%"},
-            {"id": 153, "article": "[인플레이션] 메뉴비용은 인플레이션에 맞춰 가격을 변경하는 데에 발생하는 각종 비용을 말한다.", "answer": "O", "reason": "물가상승에 따라서 가격을 인상해야 하는 경우 가격표를 변경해야 하는데 이에 소요되는 제반 비용을 총효 하여 메뉴비용이라고 한다."},
-            {"id": 154, "article": "[계산] 수요곡선 Qd = a - P, 공급곡선 Qs = c + 2P인 시장에서 공급자에게 단위당 12원의 종량세를 부과할 때 소비자가 부담하는 가격 인상분 = 4원이다.", "answer": "X", "reason": "정답은 8원입니다. 소비자 부담 = t×d/(b+d)"},
-            {"id": 155, "article": "[계산] 독점기업의 역수요함수가 P = 27 - 1Q, 한계비용이 3로 일정할 때 이윤극대화 생산량 = 12이다.", "answer": "O", "reason": "맞습니다. MR=27-2Q=3 → 12"},
-            {"id": 156, "article": "[계산] 수요곡선 Qd = a - P, 공급곡선 Qs = c + P인 시장에서 공급자에게 단위당 16원의 종량세를 부과할 때 소비자가 부담하는 가격 인상분 = 8원이다.", "answer": "O", "reason": "맞습니다. 소비자 부담 = t×d/(b+d) → 8원"},
-            {"id": 157, "article": "[계산] Y재 가격이 20% 상승하자 X재 수요량이 6% 증가하였다. 교차탄력성 = 0.3이다.", "answer": "O", "reason": "맞습니다. 6/20 (양수: 대체재) → 0.3"},
-            {"id": 158, "article": "[계산] 수요함수가 Q = 120 - 4P일 때, P = 5에서 수요의 가격탄력성(절댓값) = 5이다.", "answer": "X", "reason": "정답은 0.2입니다. 4×5/100"},
-            {"id": 159, "article": "[구매력 평가설] 절대적 구매력 평가설에 의하면 국내 인플레이션율과 해외 인플레이션율은 항상 같다.", "answer": "O", "reason": "무역에 따른 규제, 운송비, 각종 거래비용 등이 없는 상황에서 가격이 신축적인 경우, 국가 간에 무역이 완전히 자유롭다면 동일한 재화에 대한 자국의 가격과 외국의 가격이 같아지는 일물일가의 법칙이 성립한다."},
-            {"id": 160, "article": "[효율임금이론] 높은 임금은 노동자의 도덕적 해이 가능성을 낮출 수 있다.", "answer": "O", "reason": "근무태만모형 (shi rki ng model) 에 의하면, 기업은 근무태만을 방지하기 위해서 시장임금보다 높은 수준의 임금을 지급한다."},
-            {"id": 161, "article": "[계산] 생산함수가 y = √k, 저축률 0.2, (인구증가율+감가상각률) 0.04인 솔로우 모형에서 균제상태 1인당 자본량 = 12.5이다.", "answer": "X", "reason": "정답은 25입니다. s√k=(n+δ)k → k=(s/(n+δ))²"},
-            {"id": 162, "article": "[계산] 생산함수가 y = √k, 저축률 0.3, (인구증가율+감가상각률) 0.05인 솔로우 모형에서 균제상태 1인당 자본량 = 36이다.", "answer": "O", "reason": "맞습니다. s√k=(n+δ)k → k=(s/(n+δ))² → 36"},
-            {"id": 163, "article": "[계산] 2년 후 2,420원을 받는 약속어음의 현재가치(연 할인율 10%, 복리) 현재가치 = 2,000원이다.", "answer": "O", "reason": "맞습니다. 2,420/(1+0.1)^2 → 2,000원"},
-            {"id": 164, "article": "[계산] 생산함수가 y = √k, 저축률 0.2, (인구증가율+감가상각률) 0.05인 솔로우 모형에서 균제상태 1인당 자본량 = 16이다.", "answer": "O", "reason": "맞습니다. s√k=(n+δ)k → k=(s/(n+δ))² → 16"},
-            {"id": 165, "article": "[계산] 가격이 500원에서 625원으로 인상되자 수요량이 200개에서 140개로 감소하였다(변화율은 변화 전 기준). 수요의 가격탄력성(절댓값) = 2.4이다.", "answer": "X", "reason": "정답은 1.2입니다. 가격 25% 상승, 수요량 30% 감소 → 30/25"},
-            {"id": 166, "article": "[사람들의 소비행태 이론들] 항상소득이론에 따르면 사람들은 복권 당첨으로 얻은 소득과 안정된 직장에서 발생하는 소득에 대하여 다른 소비성향을 보인다.", "answer": "O", "reason": "항상소득이론에 의하면 복권 당첨으로 얻은 소득은 일시소득이며 안정된 직장에서 발생하는 소득은 항상소 득을 구성한다고 볼 수 있다."},
-            {"id": 167, "article": "[계산] 생산함수가 y = √k, 저축률 0.2, (인구증가율+감가상각률) 0.1인 솔로우 모형에서 균제상태 1인당 자본량 = 2이다.", "answer": "X", "reason": "정답은 4입니다. s√k=(n+δ)k → k=(s/(n+δ))²"},
-            {"id": 168, "article": "[계산] 한계소비성향이 0.8, 소득세율이 25%인 폐쇄경제에서 정부지출이 50 증가하면 균형국민소득 증가분 = 250이다.", "answer": "X", "reason": "정답은 125입니다. 승수 1/(1-c(1-t)) = 2.5"},
-            {"id": 169, "article": "[계산] 역수요함수가 P = 35 - 2Q이고 시장가격이 5일 때 소비자잉여 = 225이다.", "answer": "O", "reason": "맞습니다. 균형량 15, ½×(35-5)×15 → 225"},
-            {"id": 170, "article": "[계산] 한계소비성향이 0.75인 경제(소득세 없음)에서 정액세가 40 감소하면 균형국민소득 증가분 = 120이다.", "answer": "O", "reason": "맞습니다. 조세승수 c/(1-c)×40 → 120"},
-            {"id": 171, "article": "[소득재분배 철학] 자유주의자(libertarian) 들은 결과보다 과정을 중요하다 여기고 기회평등을 주장한다.", "answer": "O", "reason": "자유주의는 타인의 자유나 권리를 침해하지 않는 범위 내에서 개인의 자유 특히 경제적, 사회적 자유를 보 장기는 데 초점이 맞춰서 사람의 조류이다."},
-            {"id": 172, "article": "[계산] 가격이 100원에서 125원으로 인상되자 수요량이 100개에서 95개로 감소하였다(변화율은 변화 전 기준). 수요의 가격탄력성(절댓값) = 0.2이다.", "answer": "O", "reason": "맞습니다. 가격 25% 상승, 수요량 5% 감소 → 5/25 → 0.2"},
-            {"id": 173, "article": "[계산] X재와 Y재만 생산하는 국가의 기준연도 가격은 각각 3, 2이고 비교연도 가격은 5, 3이며 비교연도 생산량은 15개, 12개일 때(GDP디플레이터 기준) 물가상승률 = 160.87%이다.", "answer": "X", "reason": "정답은 60.87%입니다. 디플레이터 = 111/69×100"},
-            {"id": 174, "article": "[계산] 수요함수가 Q = 70 - 4P일 때, P = 5에서 수요의 가격탄력성(절댓값) = 1.4이다.", "answer": "X", "reason": "정답은 0.4입니다. 4×5/50"},
-            {"id": 175, "article": "[재화 X 의 가격이 상승할 때 나타나는 효과] 재화 X 와 보완관계에 있는 재화 Y 의 수요량은 증가한다", "answer": "X", "reason": "한편, 해당 재화에 대한 수요량이 감소하기 때문에 그와 보완관계에 있는 재화에 대한 수요 또한 감소하여 보완재의 가격은 하락한다."},
-            {"id": 176, "article": "[계산] 1년 후 2,400원을 받는 약속어음의 현재가치(연 할인율 20%, 복리) 현재가치 = 2,400원이다.", "answer": "X", "reason": "정답은 2,000원입니다. 2,400/(1+0.2)^1"},
-            {"id": 177, "article": "[계산] 폐쇄경제에서 C = 50 + 0.6(Y - T), 투자 50, 정부지출 50, 조세 50일 때 균형국민소득 = 250이다.", "answer": "X", "reason": "정답은 300입니다. Y=(50-0.6×50+50+50)/(1-0.6)"},
-            {"id": 178, "article": "[계산] 3년 후 1,331원을 받는 약속어음의 현재가치(연 할인율 10%, 복리) 현재가치 = 1,000원이다.", "answer": "O", "reason": "맞습니다. 1,331/(1+0.1)^3 → 1,000원"},
-            {"id": 179, "article": "[계산] 15세 이상 인구 2000명 중 취업자 520명, 실업자 140명일 때 실업률 = 21.21%이다.", "answer": "O", "reason": "맞습니다. 140/(520+140)×100 → 21.21%"},
-            {"id": 180, "article": "[계산] 수요곡선 Qd = a - 3P, 공급곡선 Qs = c + P인 시장에서 공급자에게 단위당 8원의 종량세를 부과할 때 소비자가 부담하는 가격 인상분 = 6원이다.", "answer": "X", "reason": "정답은 2원입니다. 소비자 부담 = t×d/(b+d)"},
-            {"id": 181, "article": "[조세부과와 공공요금 책정의 원칙] 수익자부담의 원칙에 따르면 정부정책의 편익을 많이 받을수록 더 많은 세금을 부담해야 한다.", "answer": "O", "reason": "편익원칙이란 각 납세자가 공공서비스로부터 받은 편익에 비례하도록 조세부담을 분배하는 것이 공평하다 고 보는 견해로서 이는 수익자부담의 원칙을 의미한다."},
-            {"id": 182, "article": "[원점에 대해 오목한 생산가능곡선] 생산가능곡선이 원점에 대해 오목한 것은 재화 생산의 증가에 따른 기회비용이 체증하기 때문 이다", "answer": "O", "reason": "생산가능곡선이 우하향하는 것은 자원의 희소성과 기회비용을 반영한 것이며, 생산가능곡선이 원점에 대해 오목한 것은 재화 생산의 증가에 따라 기회비용이 증가하기 때문이다."},
-            {"id": 183, "article": "[계산] 본원통화 500, 현금통화비율 0.2, 지급준비율 0.05일 때 통화량 = 10,000이다.", "answer": "X", "reason": "정답은 2,400입니다. 통화승수 (1+k)/(k+r)=4.8"},
-            {"id": 184, "article": "[계산] 1시간당 A국은 X재 6개 또는 Y재 6개, B국은 X재 6개 또는 Y재 3개를 생산할 수 있다. A국은 X재 생산에 비교우위를 갖는다.", "answer": "X", "reason": "틀립니다. X재 기회비용: A국 1Y, B국 0.5Y."},
-            {"id": 185, "article": "[계산] 수요곡선이 Qd = 60 - 3P, 공급곡선이 Qs = -30 + 3P일 때 균형가격 = 15원이다.", "answer": "O", "reason": "맞습니다. 60-3P = -30+3P → P=15 → 15원"},
-            {"id": 186, "article": "[원점에 대해 오목한 생산가능곡선] 기술진보가 이루어지면 생산가능곡선은 원점으로부터 바깥쪽으로 이동한다.", "answer": "O", "reason": "기술진보가 이루어지면 이전과 동일한 생산요소를 투입하고도 더 많은 생산물을 산출량 낼 수 있기 때문에 생산가능곡선은 바깥쪽으로 확장하여 이동한다."},
-            {"id": 187, "article": "실업이란 사람들이 일할 능력과 의사를 가지고 일자리를 찾고 있으나 일자리를 얻지 못한 상태 를말한다", "answer": "O", "reason": "경제활동인구는 일할 능력과 의사가 있는 사람으로서 그중 일자리를 얻은 사람을 취업자, 그렇지 못한 사람을 실업자라고 한다."},
-            {"id": 188, "article": "[계산] 1시간당 A국은 X재 2개 또는 Y재 4개, B국은 X재 5개 또는 Y재 2개를 생산할 수 있다. A국은 X재 생산에 비교우위를 갖는다.", "answer": "X", "reason": "틀립니다. X재 기회비용: A국 2Y, B국 0.4Y."},
-            {"id": 189, "article": "[계산] Y재 가격이 5% 상승하자 X재 수요량이 10% 증가하였다. 교차탄력성 = 0.5이다.", "answer": "X", "reason": "정답은 2입니다. 10/5 (양수: 대체재)"},
-            {"id": 190, "article": "[예상보다 높은 인플레이션이 발생할 경우 나타나는 효과] 누진세 체계하에서 정부의 조세수입은 감소한다.", "answer": "X", "reason": "예상보다 높은 인플레이션으로 명목임금이 상승할 경우 누진세 체계를 고려하면 정부의 조세수입은 증가하게 된다"},
-            {"id": 191, "article": "[계산] 수요곡선이 Qd = 51 - 3P, 공급곡선이 Qs = -4 + 2P일 때 균형가격 = 10원이다.", "answer": "X", "reason": "정답은 11원입니다. 51-3P = -4+2P → P=11"},
-            {"id": 192, "article": "[계산] 15세 이상 인구 1000명 중 취업자 390명, 실업자 120명일 때 경제활동참가율 = 51%이다.", "answer": "O", "reason": "맞습니다. (390+120)/1000×100 → 51%"},
-            {"id": 193, "article": "[계산] 한계소비성향이 0.8, 소득세율이 25%인 폐쇄경제에서 정부지출이 200 증가하면 균형국민소득 증가분 = 500이다.", "answer": "O", "reason": "맞습니다. 승수 1/(1-c(1-t)) = 2.5 → 500"},
-            {"id": 194, "article": "[후생경제이론] 계약곡선 위의 모든 점은 파레토효율적 배분을 대표한다.", "answer": "O", "reason": "경제 내의 어느 누구에게도 손해가 가지 않으면서 최소한 한 사람 이상에게 이득이 되도록 하는 것이 불가능한 자원배분상태를 파레토효율이라고 한다."},
-            {"id": 195, "article": "[계산] 생산함수가 y = √k, 저축률 0.4, (인구증가율+감가상각률) 0.1인 솔로우 모형에서 균제상태 1인당 자본량 = 8이다.", "answer": "X", "reason": "정답은 16입니다. s√k=(n+δ)k → k=(s/(n+δ))²"},
-            {"id": 196, "article": "[인플레이션] 디플레이션은 인플레이션이 진행되는 상황에서 경제가 침체하는 상황을 말한다.", "answer": "X", "reason": "유가 상승, 원자재 가격 상승 등 불리한 공급충격 혹은 부의 공급충격이 발생할 경우 총공급곡선이 좌상방 으로 이동하게 된다."},
-            {"id": 197, "article": "[계산] 빅맥이 미국에서 3달러, 한국에서 3,000원이고 실제 환율이 800원/달러일 때, 구매력평가설 기준으로 원화는 달러 대비 저평가되어 있다.", "answer": "X", "reason": "틀립니다. PPP환율 1,000원 vs 실제 800원."},
-            {"id": 198, "article": "[계산] 본원통화 200, 현금통화비율 0.2, 지급준비율 0.1일 때 통화량 = 240이다.", "answer": "X", "reason": "정답은 800입니다. 통화승수 (1+k)/(k+r)=4"},
-            {"id": 199, "article": "[계산] 수요곡선이 Qd = 25 - P, 공급곡선이 Qs = -17 + 2P일 때 균형가격 = 11원이다.", "answer": "X", "reason": "정답은 14원입니다. 25-1P = -17+2P → P=14"},
-            {"id": 200, "article": "[인플레이션] 초인플레이션은 극단적이고 장기적인 인플레이션으로 통제가 어려운 상황을 말한다.", "answer": "O", "reason": "초인플레이션 (hyperi nfl ati on) 이란 어느 한 경제의 일반 물가수준이 매우 급격히 증가하는 현상으로서 대 략 1 개월 기준으로 50% 이상의 물가상승이 1 년 이상 지속되는 것을 말한다."}
+            { id: 1, article: "[기회비용] 기회비용은 어떤 선택을 함에 따라 포기해야 하는 여러 대안들 중에 가치가 가장 큰 것이다.", answer: "O", reason: "어느 대안을 선택함으로써 포기한 차선의 가치가 기회비용이다(순편익으로 측정)." },
+            { id: 2, article: "[기회비용] 생산이 증가할수록 기회비용이 체감하는 경우에는 두 재화의 생산가능곡선이 원점에 대해 볼록한 형태이다.", answer: "O", reason: "기회비용 체증이면 원점에 오목, 체감이면 원점에 볼록한 형태이다." },
+            { id: 3, article: "[기회비용] 모든 고정비용은 매몰비용이다.", answer: "X", reason: "고정비용 중 재판매가 가능한 시설 등은 일부 회수 가능하므로 모든 고정비용이 매몰비용인 것은 아니다." },
+            { id: 4, article: "[기회비용] 동일한 수입이 기대되는 경우, 기회비용이 가장 작은 대안을 선택하는 것이 합리적이다.", answer: "O", reason: "편익이 같다면 비용(기회비용)이 가장 작은 대안이 합리적이다. 경제적 비용은 명시적+암묵적 비용을 포함한다." },
+            { id: 5, article: "[생산가능곡선] 원점에 대해 오목한 생산가능곡선에서, X축 상품생산이 늘어나면 기울기가 더 가팔라진다.", answer: "O", reason: "오목하면 기회비용 체증이므로 X재 생산이 늘수록 기울기(절댓값)가 커진다." },
+            { id: 6, article: "[생산가능곡선] 생산기술이 향상되면 생산가능곡선이 원점에서 더 멀어진다.", answer: "O", reason: "같은 요소투입으로 더 많은 산출이 가능해져 생산가능곡선이 바깥으로 이동한다." },
+            { id: 7, article: "[생산가능곡선] 원점에 대해 오목한 생산가능곡선에서는 기회비용 체증의 법칙이 성립한다.", answer: "O", reason: "오목한 PPF는 기회비용 체증을 반영한다." },
+            { id: 8, article: "[생산가능곡선] 생산가능곡선 기울기의 절댓값은 한계변환율(한계전환율)이다.", answer: "O", reason: "기울기의 절댓값 = 한계변환율(MRT) = 한계비용의 비율." },
+            { id: 9, article: "[생산가능곡선] 생산가능곡선상의 점에서 파레토개선이 가능하다.", answer: "X", reason: "PPF상의 점은 생산의 효율성을 반영하므로 파레토개선이 불가능하다." },
+            { id: 10, article: "[생산가능곡선(계산)] X재와 Y재를 생산하는 K국가의 생산가능곡선상에 (x1,y1)=(200,300), (x2,y2)=(240,290)이 있다. 세 번째 점 (x3,y3)이 (280,270)이면 기회비용체증의 법칙이 성립한다.", answer: "O", reason: "(200,300)→(240,290)의 MRT=0.25. 기회비용체증이 되려면 다음 구간 MRT가 0.25보다 커야 한다. (240,290)→(280,270) MRT=0.5로 증가하므로 체증이다." },
+            { id: 11, article: "[수요곡선의 이동] 석탄과 천연가스는 전력생산에 쓰이는 대체재이다. 셰일가스 채굴 기술이 개발되어 천연가스가 더 공급되면 석탄시장(수요 우하향, 공급 우상향)에서 가격은 하락하고 생산량은 감소한다.", answer: "O", reason: "천연가스 공급 증가→가스 가격 하락→대체재인 석탄의 수요 감소(수요곡선 좌하방 이동)→석탄 가격 하락, 생산량 감소." },
+            { id: 12, article: "[수요함수와 재화의 성격] 맥주시장의 수요함수가 Q_D=100-4P-P_C+2I일 때(Q_D 맥주수요량, P 맥주가격, P_C 치킨가격, I 소득), 맥주는 열등재이다.", answer: "X", reason: "소득(I)이 증가하면 맥주수요가 증가(+2I)하므로 정상재이다." },
+            { id: 13, article: "[수요함수와 재화의 성격] 맥주시장의 수요함수가 Q_D=100-4P-P_C+2I일 때(Q_D 맥주수요량, P 맥주가격, P_C 치킨가격, I 소득), 맥주는 치킨의 보완재이다.", answer: "O", reason: "치킨가격이 오르면 맥주수요가 감소(-P_C)하므로 보완재 관계이다." },
+            { id: 14, article: "[수요함수와 재화의 성격] 맥주시장의 수요함수가 Q_D=100-4P-P_C+2I일 때(Q_D 맥주수요량, P 맥주가격, P_C 치킨가격, I 소득), 치킨가격이 인상되면 맥주수요는 감소한다.", answer: "O", reason: "P_C의 계수가 -1이므로 치킨가격 상승 시 맥주수요는 감소한다." },
+            { id: 15, article: "[수요함수와 재화의 성격] 수요의 법칙과 공급의 법칙이 성립하고 선풍기가 열등재인 선풍기 시장에서, 대체재인 에어컨 생산기술의 발전으로 에어컨을 더 저렴하게 생산할 수 있게 되면 선풍기 균형가격의 상승을 유발한다.", answer: "X", reason: "에어컨 가격 하락→에어컨 수요 증가, 선풍기 수요 감소→선풍기 가격 하락 요인이다." },
+            { id: 16, article: "[수요함수와 재화의 성격] 수요의 법칙과 공급의 법칙이 성립하고 선풍기가 열등재인 선풍기 시장에서, 대체재인 에어컨 가격이 상승하면 선풍기 균형가격의 상승을 유발한다.", answer: "O", reason: "에어컨 수요 감소, 선풍기 수요 증가→선풍기 가격 상승." },
+            { id: 17, article: "[수요함수와 재화의 성격] 수요의 법칙과 공급의 법칙이 성립하고 선풍기가 열등재인 선풍기 시장에서, 선풍기 물품세가 인상되면 선풍기 균형가격(소비자 직면가격)의 상승을 유발한다.", answer: "O", reason: "물품세 인상 시 소비자 직면가격은 상승하고 생산자 직면가격은 하락하여 괴리가 발생한다." },
+            { id: 18, article: "[수요함수와 재화의 성격] 수요의 법칙과 공급의 법칙이 성립하고 선풍기가 열등재인 선풍기 시장에서, 소득이 하락하면 선풍기 균형가격의 상승을 유발한다.", answer: "O", reason: "열등재는 소득이 하락하면 오히려 수요가 증가하여 가격이 상승한다." },
+            { id: 19, article: "[수요함수와 재화의 성격] 베이글과 크림치즈는 보완재, 베이글과 베이컨은 대체재이다. 베이글의 원료인 밀가루 가격 급등으로 베이글의 생산비용이 상승했을 때(모두 수요·공급의 법칙 성립, 다른 조건 일정), 크림치즈의 거래량은 감소한다.", answer: "O", reason: "베이글 가격 상승→베이글 수요량 감소→보완재인 크림치즈 수요 감소→거래량 감소." },
+            { id: 20, article: "[수요함수와 재화의 성격] 베이글과 크림치즈는 보완재, 베이글과 베이컨은 대체재이다. 베이글의 원료인 밀가루 가격 급등으로 베이글의 생산비용이 상승했을 때(모두 수요·공급의 법칙 성립, 다른 조건 일정), 베이컨의 판매수입은 증가한다.", answer: "O", reason: "대체재인 베이컨 수요 증가→거래량과 가격 모두 상승→판매수입 증가." },
+            { id: 21, article: "[수요함수와 재화의 성격] 베이글과 크림치즈는 보완재, 베이글과 베이컨은 대체재이다. 베이글의 원료인 밀가루 가격 급등으로 베이글의 생산비용이 상승했을 때(모두 수요·공급의 법칙 성립, 다른 조건 일정), 베이컨 시장의 총잉여는 변함이 없다.", answer: "X", reason: "베이컨 거래량이 증가하므로 총잉여는 증가한다." },
+            { id: 22, article: "[수요함수와 재화의 성격] 네트워크효과가 있는 경우 시장수요곡선은 개별 수요곡선의 수평합이다.", answer: "X", reason: "네트워크효과(bandwagon·snob)가 있으면 수평합보다 더 완만하거나 더 가파르게 나타난다." },
+            { id: 23, article: "[수요함수와 재화의 성격] 상품 소비자의 수가 증가함에 따라 그 상품수요가 증가하는 효과를 속물효과(snob effect)라고 한다.", answer: "X", reason: "수요가 증가하는 것은 편승효과(bandwagon)이고, 감소하는 효과가 속물효과이다." },
+            { id: 24, article: "[수요함수와 재화의 성격] 열등재라도 대체효과의 절대적 크기가 소득효과의 절대적 크기보다 크면 수요곡선은 우하향한다.", answer: "O", reason: "기펜재가 아닌 열등재는 대체효과가 더 커서 수요법칙이 성립한다." },
+            { id: 25, article: "[수요함수와 재화의 성격] 소득이 증가할 때, 소비가 증가하는 재화는 정상재이다.", answer: "O", reason: "정상재는 소득탄력성이 0보다 큰 재화이다." },
+            { id: 26, article: "[가격탄력성(계산)] X재의 수요곡선이 Q=10-2P일 때, 가격이 2.5이면 수요의 가격탄력성이 1이다.", answer: "O", reason: "수요곡선을 P=5-0.5Q로 바꾸면 세로절편 5의 중점인 P=2.5에서 가격탄력성이 1이다. P=2.5일 때 e=2P/(10-2P) = 1이다." },
+            { id: 27, article: "[가격탄력성(계산)] X재의 수요함수와 공급함수가 각각 Q_D=200-2P, Q_S=100+3P일 때, 시장균형에서 수요의 가격탄력성(절댓값)은 0.25이다.", answer: "O", reason: "균형은 200-2P=100+3P에서 P*=20, Q*=160. e=2×20/160=0.25. 따라서 0.25가 맞다." },
+            { id: 28, article: "[가격탄력성(지출액 일정)] 소비자 갑이 담배가격의 변화에 관계없이 담배구매에 일정한 금액을 지출한다면(수요의 법칙 성립), 갑의 담배에 대한 수요의 가격탄력성(절댓값) e는 e=1이다.", answer: "O", reason: "지출액이 일정하면 PQ=k이므로 e=-(dQ/dP)(P/Q)=1이다. 따라서 e=1이다." },
+            { id: 29, article: "[시장수요함수와 가격탄력성(계산)] X재 시장에 소비자 갑과 을만 있고 개별수요함수가 각각 Q_D=10-2P, Q_D=15-3P이다. X재 가격이 2.5일 때 시장수요의 가격탄력성(절댓값)은 1이다.", answer: "O", reason: "시장수요함수는 Q=25-5P. P=2.5이면 Q=12.5이므로 e=5×2.5/12.5=1. 따라서 1이 맞다." },
+            { id: 30, article: "[가격탄력성과 기업의 총수입] 독점기업의 수요곡선이 P=30-2Q이고 현재 가격이 10일 때, 수요의 가격탄력성은 비탄력적이고, 총수입을 증대시키기 위해 가격을 인상해야 한다.", answer: "O", reason: "P=10이면 Q=10, dQ/dP=-0.5이므로 e=0.5×10/10=0.5(비탄력적). 비탄력적 구간에서는 가격을 인상해야 총수입이 증가한다. 정답이다." },
+            { id: 31, article: "[가격탄력성과 기업의 총수입(계산)] 영화관 A의 티켓에 대한 수요함수가 Q=160-2P일 때, A의 판매수입이 극대화되는 티켓 가격은 40이다.", answer: "O", reason: "P=80-0.5Q이므로 TR=(80-0.5Q)Q. dTR/dQ=80-Q=0에서 Q=80, P=40. (수요곡선 세로절편의 절반에서 e=1) 따라서 40이 맞다." },
+            { id: 32, article: "[가격탄력성과 기업의 총수입(계산)] X재만 판매하는 A기업이 가격을 20% 인상하였더니 매출액이 10% 감소하였다. 이때 수요의 가격탄력성은 1보다 크다.", answer: "O", reason: "매출액 변화율≈가격변화율+수요량변화율이므로 -10%=20%+수요량변화율, 수요량은 약 30% 감소. 가격탄력성=30/20=1.5. 1.5로 1보다 크다(탄력적)." },
+            { id: 33, article: "[가격탄력성과 기업의 총수입(계산)] 정상재 A, B의 가격이 각각 2% 상승할 때 A재의 소비지출액은 변화가 없었고 B재의 소비지출액은 1% 감소하였다. 이때 수요의 가격탄력성(절댓값) ε_A, ε_B에 관하여 ε_A=1, ε_B>1이다.", answer: "O", reason: "A: 지출액 변화 0%=2%+수요량변화→수요량 -2%, ε_A=1. B: -1%=2%+수요량변화→수요량 -3%, ε_B=1.5. 따라서 맞다." },
+            { id: 34, article: "[수요곡선의 해석과 가격탄력성] X재(정상재)의 수요곡선이 세로절편 100, 가로절편 100인 직선(P=100-Q)일 때, 가격이 30원이면 X재의 수요량은 70이다.", answer: "O", reason: "P=100-Q에 P=30을 대입하면 Q=70이다." },
+            { id: 35, article: "[수요곡선의 해석과 가격탄력성] X재(정상재)의 수요곡선이 세로절편 100, 가로절편 100인 직선(P=100-Q)일 때, 가격에 상관없이 가격탄력성의 크기는 일정하다.", answer: "X", reason: "선형 수요곡선은 점마다 가격탄력성이 다르다(점탄력성)." },
+            { id: 36, article: "[수요곡선의 해석과 가격탄력성] X재(정상재)의 수요곡선이 세로절편 100, 가로절편 100인 직선(P=100-Q)일 때, X재 시장이 독점시장이라면 독점기업이 이윤극대화를 할 때 설정하는 가격은 50원 이상이다.", answer: "O", reason: "독점기업은 MR≥0인 탄력적 구간(P≥50)에서 생산하므로 가격은 50 이상이다." },
+            { id: 37, article: "[수요곡선의 해석과 가격탄력성] X재(정상재)의 수요곡선이 세로절편 100, 가로절편 100인 직선(P=100-Q)일 때, 소득이 증가하는 경우 수요곡선은 좌측으로 이동한다.", answer: "X", reason: "정상재는 소득이 증가하면 수요곡선이 우측으로 이동한다." },
+            { id: 38, article: "[소득탄력성과 교차탄력성] 사과수요의 소득탄력성이 1.2, 감귤가격에 대한 교차탄력성이 0.9, 배가격에 대한 교차탄력성이 -1.5일 때, 사과는 배와 대체재이다.", answer: "X", reason: "교차탄력성이 음수(-1.5)이면 보완재이다. (양수면 대체재, 0 부근이면 독립재)" },
+            { id: 39, article: "[소득탄력성과 교차탄력성] 사과수요의 가격탄력성이 1.4(절댓값)일 때, 다른 조건이 불변이면 사과가격이 상승하면 사과 판매자의 총수입은 감소한다.", answer: "O", reason: "탄력적(e>1) 구간에서는 가격 상승 시 수요량 감소 효과가 더 커서 총수입이 감소한다." },
+            { id: 40, article: "[공급탄력성과 시장공급곡선] 공급함수가 Q=100+2P일 때(P>0), 공급의 가격탄력성은 1보다 작다(0<e<1).", answer: "O", reason: "P=0.5Q-50으로 공급곡선이 횡축(Q축)에서 출발하므로 e=1-100/Q<1이다." },
+            { id: 41, article: "[탄력성 종합] 우상향 직선의 공급곡선 Y축 절편이 0보다 크면 공급의 가격탄력성은 무조건 1보다 크다.", answer: "O", reason: "Y축 절편>0이면 e>1, 절편<0이면 e<1, 원점 통과 시 e=1이다." },
+            { id: 42, article: "[탄력성 종합] 수요곡선이 수직이면 가격탄력성이 무한대이다.", answer: "X", reason: "수직이면 가격이 변해도 수요량이 불변이므로 가격탄력성은 0이다." },
+            { id: 43, article: "[시장균형(계산)] 시장수요곡선이 P=500-Q(선형), 시장공급곡선이 P=150(수평)일 때 균형은 P*=150, Q*=350이다.", answer: "O", reason: "수요함수 Q=-P+500에 P=150을 대입하면 Q=350이다." },
+            { id: 44, article: "[소비자잉여와 생산자잉여(계산)] Q_D=36-4P, Q_S=-4+4P일 때 시장균형에서 생산자잉여는 32, 소비자잉여는 32이다.", answer: "O", reason: "P=9-0.25Q, P=0.25Q+1에서 P*=5, Q*=16. CS=(9-5)×16/2=32, PS=(5-1)×16/2=32." },
+            { id: 45, article: "[조세의 귀착] 종량세를 판매자에게 부과하는 경우와 구매자에게 부과하는 경우를 비교하면, 균형거래량은 모두 증가한다.", answer: "X", reason: "어느 쪽에 부과하든 균형거래량은 감소하며, 소비자·생산자 직면가격과 조세수입, 경제적 순손실은 동일하다." },
+            { id: 46, article: "[조세의 귀착(계산)] Q_D=100-2P, Q_S=20일 때 공급자에게 단위당 10의 세금을 부과한 이후 소비자가 지불하는 시장가격은 40이다.", answer: "O", reason: "공급이 완전비탄력적이면 조세 부담은 모두 공급자가 진다. 소비자 가격은 40 그대로이고 판매자 수취가격은 30이 된다." },
+            { id: 47, article: "[조세의 초과부담] 조세부담의 귀착(tax incidence)은 조세당국과 생산자 및 소비자 간의 협상능력에 의존한다.", answer: "X", reason: "조세부담의 귀착은 협상능력이 아니라 수요와 공급의 가격탄력성에 의존한다." },
+            { id: 48, article: "[조세의 초과부담] 수요의 가격탄력성이 공급의 가격탄력성보다 클수록 생산자의 조세부담분이 커진다.", answer: "O", reason: "상대적으로 탄력성이 큰 쪽의 부담은 작고, 탄력성이 작은 쪽(비탄력적인 쪽)의 부담이 크다." },
+            { id: 49, article: "[조세의 초과부담(계산)] Q^s=-110+2P, Q^d=400-4P인 시장에서 단위당 6의 판매세를 부과하면 경제적 순손실(deadweight loss)은 24이다.", answer: "O", reason: "세 부과 전 P=85, Q=60 / 부과 후 Q=52. DWL=6×(60-52)/2=24." },
+            { id: 50, article: "[최고가격규제] 시장균형가격보다 낮은 수준에서 가격상한제를 실시하면 암시장이 발생할 수 있다.", answer: "O", reason: "초과수요가 발생해도 가격이 상한에 고정되어 있어 암시장이 발생할 가능성이 커진다." },
+            { id: 51, article: "[최고가격규제] 시장균형가격보다 낮은 수준에서 가격상한제를 실시하면 공급과잉이 발생한다.", answer: "X", reason: "상한가격이 균형가격보다 낮으면 초과수요(공급 부족)가 발생하며, 이로 인해 품귀현상이 나타나고 품질은 나빠질 수 있다." },
+            { id: 52, article: "[무차별곡선과 예산선] 무차별곡선이 원점에 대해 오목하면 한계대체율은 체감한다.", answer: "X", reason: "일반적인 무차별곡선은 원점에 볼록하여 한계대체율이 체감한다. 원점에 오목하면 한계대체율은 체증한다." },
+            { id: 53, article: "[무차별곡선과 예산선] 완전대체재 관계인 두 재화에 대한 무차별곡선은 직선의 형태이다.", answer: "O", reason: "완전대체재는 한계대체율이 일정한 직선 형태의 무차별곡선을 가진다." },
+            { id: 54, article: "[소비자 최적선택의 조건(계산)] 효용함수가 U=xy, X재·Y재 가격이 각각 2,000원·8,000원, 소득이 100,000원일 때 효용극대화 소비점에서 한계대체율(MRS_XY)은 0.25이다.", answer: "O", reason: "최적조건 MRS=P_X/P_Y=2,000/8,000=0.25이다." },
+            { id: 55, article: "[소비자 최적선택의 도출(계산)] U=xy, P_X=5, P_Y=10, 소득이 1,000원일 때 효용극대화 소비량은 x=100, y=50이다.", answer: "O", reason: "MRS=y/x=5/10, 예산선 5x+10y=1,000을 연립하면 x=100, y=50이다." },
+            { id: 56, article: "[소비자 최적선택의 변화(계산)] U=XY^2, P_X=1, P_Y=2, 소득 90인 갑의 효용함수와 소득이 각각 U=√(XY), 100으로 변경되면 효용극대화 구매량은 X재 20 증가, Y재 5 감소한다.", answer: "O", reason: "변경 전 X=30, Y=30 / 변경 후 X=50, Y=25 (MRS=P_X/P_Y=1/2와 예산선 연립). 따라서 X는 20 증가, Y는 5 감소." },
+            { id: 57, article: "[가격효과(기펜재)] 기펜재의 보상수요곡선은 우하향한다.", answer: "O", reason: "기펜재도 대체효과만 반영한 보상수요곡선은 우하향한다." },
+            { id: 58, article: "[가격효과(기펜재)] 기펜재는 가격이 하락할 때 수요량이 증가한다.", answer: "X", reason: "기펜재는 수요법칙의 예외로, 가격이 하락하면 수요량이 오히려 감소한다(소득효과가 대체효과보다 큼)." },
+            { id: 59, article: "[여가-소득 선택모형] 후방굴절형 노동공급곡선이 발생하는 이유는 여가가 정상재이고 소득효과가 대체효과보다 크기 때문이다.", answer: "O", reason: "임금 상승 시 소득효과(여가 소비 증가)가 대체효과(여가 소비 감소)보다 크면 노동공급이 오히려 감소한다." },
+            { id: 60, article: "[시점간 소비선택 모형] 피셔의 2기간 모형에서(두 기간 소비 모두 정상재), 제1기의 소득 증가는 제1기의 소비를 증가시킨다.", answer: "O", reason: "소득 증가로 예산선이 평행하게 바깥으로 이동하고 1기·2기 소비가 모두 증가한다(소득효과)." },
+            { id: 61, article: "[시점간 소비선택 모형] 피셔의 2기간 모형에서(두 기간 소비 모두 정상재), 제2기의 소득 증가는 제1기의 소비를 감소시킨다.", answer: "X", reason: "제2기 소득이 증가해도 예산선이 바깥으로 이동하여 1기·2기 소비 모두 증가한다." },
+            { id: 62, article: "[현시선호이론] 갑의 소득이 24이고 (P_X,P_Y)=(4,2)에서 A(5,1), (3,3)에서 B(2,6)를 선택했다면, 갑의 선택은 현시선호 약공리를 만족하지 못한다.", answer: "O", reason: "가격 변화 전 B를 선택할 수 있었는데도 A를 택했고(A가 현시선호), 변화 후 A를 택할 수 있었는데도 B를 택해 일관성이 없다. 약공리 위반이다." },
+            { id: 63, article: "[위험에 대한 태도(계산)] 수탁인 을은 이익의 10%를 운용수수료로 받는다(손실 시 0). 확률 0.1/0.9, X안 100만/110만 원, Y안 400만/70만 원이고 을이 위험중립적이면 Y안을 선택하며 기대운용수수료는 3만 원이다.", answer: "O", reason: "X안 기대운용수수료=9,000원, Y안=(300만×0.1×0.1)=30,000원. 수수료 극대화를 위해 Y안을 선택한다." },
+            { id: 64, article: "[복권과 위험프리미엄] 위험애호적인 사람의 폰 노이만-모겐스턴 효용함수는 볼록함수이며, 확실성등가가 기대소득보다 크므로 위험프리미엄이 0보다 작다.", answer: "O", reason: "위험애호자는 효용함수가 볼록하고 확실성등가>기대소득이므로 위험프리미엄이 음(-)이다. (위험기피자는 오목, 위험프리미엄 양(+))" },
+            { id: 65, article: "[공정보험료와 최대보험료(계산)] U=√Y인 소비자가 100만 원짜리 자전거를 가지고 있고 도난확률이 0.5일 때, 손실액 전액을 보상하는 보험에 대해 최대 75만 원까지 지불할 용의가 있다.", answer: "O", reason: "기대효용=500이므로 확실성등가=25만 원. 최대 보험료=100-25=75만 원(공정보험료는 50만 원)." },
+            { id: 66, article: "[공정보험료와 최대보험료(계산)] U=√Y인 소비자가 100만 원짜리 자전거를 가지고 있고 도난확률이 0.5일 때, 위험한 기회를 다른 사람에게 전가할 때 지급하는 최대 추가보상액은 50만 원이다.", answer: "X", reason: "추가보상액=위험프리미엄=기대소득(50만)-확실성등가(25만)=25만 원이다." },
+            { id: 67, article: "[생산함수의 성격(계산)] 생산함수 Q=2L²+2K²는 규모에 대한 수익 체증의 특성을 가지며, 노동의 한계생산은 4L이다.", answer: "O", reason: "2(jL)²+2(jK)²=j²(2L²+2K²)>j·Q이므로 규모수익 체증. MP_L=∂Q/∂L=4L." },
+            { id: 68, article: "[비용함수의 성격] 평균비용이 하락할 때 한계비용은 평균비용보다 크다.", answer: "X", reason: "평균비용이 하락할 때는 한계비용이 평균비용보다 작고, 평균비용이 상승할 때 한계비용이 평균비용보다 크다." },
+            { id: 69, article: "[비용함수의 성격] 생산요소가 한 종류이고 요소가격이 불변일 때, 평균고정비용곡선은 직각쌍곡선의 모양을 가진다.", answer: "O", reason: "AFC=FC/Q로 생산량이 늘수록 하락하는 직각쌍곡선 형태이다." },
+            { id: 70, article: "[생산자 최적선택] MP_K가 MP_L의 2배이고 노동가격이 8, 자본가격이 4인 A기업이 한계생산 체감 하에서 동일한 생산량으로 비용을 줄이려면 자본투입을 늘리고 노동투입을 줄여야 한다.", answer: "O", reason: "MP_L/w=α/8 < MP_K/r=2α/4이므로 1원당 한계생산이 큰 자본을 늘리고 노동을 줄여야 한다. (MRTS=MP_L/MP_K=1/2 < w/r=2)" },
+            { id: 71, article: "[규모의 경제] 장기평균비용이 우하향하는(규모의 경제가 강한) 경우 장기적으로 시장에는 한 기업만이 존재하게 된다(자연독점).", answer: "O", reason: "규모의 경제가 시장 전체에 걸쳐 나타나면 결국 하나의 기업만 살아남아 독점이 형성되는데 이를 자연독점이라 한다." },
+            { id: 72, article: "[규모의 경제] 우하향하는 장기평균비용 조건에서 소규모 기업의 평균비용은 대규모 기업보다 더 낮다.", answer: "X", reason: "소규모 기업은 생산량이 적어 평균비용이 더 높아 퇴출압력을 받는다." },
+            { id: 73, article: "[이윤 및 이윤극대화(계산)] 기업 A의 비용함수가 C=√Q+50일 때, 100개를 생산하는 경우 이윤이 0이 되는 가격은 0.6이다.", answer: "O", reason: "TC=√100+50=60, π=100P-60=0에서 P=0.6." },
+            { id: 74, article: "[경쟁기업의 단기균형(계산)] 완전경쟁시장의 수요함수가 Q_D=30-3P이고 모든 기업의 한계비용이 4로 동일할 때, 균형가격은 4, 균형거래량은 18이다.", answer: "O", reason: "한계비용이 동일하면 시장공급곡선은 P=4. 수요함수에 대입하면 Q=30-12=18." },
+            { id: 75, article: "[경쟁기업의 장기균형] 완전경쟁시장의 장기균형에서 개별기업은 장기평균비용의 최저점에서 생산한다.", answer: "O", reason: "자유로운 진입·퇴출로 장기에는 P=LMC=LAC(최저점)가 되어 초과이윤이 0이 된다." },
+            { id: 76, article: "[경쟁기업의 장기균형] 완전경쟁시장의 장기균형에서 개별기업은 0보다 큰 초과이윤을 얻는다.", answer: "X", reason: "장기에는 진입·퇴출이 더 이상 발생하지 않는 상태로 가격=평균비용이므로 경제적 이윤은 0이다." },
+            { id: 77, article: "[독점시장의 균형] 독점기업이 현재 생산량에서 한계수입이 한계비용보다 높다면, 이윤극대화를 위해 가격을 인상해야 한다.", answer: "X", reason: "MR>MC이면 생산을 늘려야 하며, 이 경우 가격은 인하해야 한다." },
+            { id: 78, article: "[독점시장의 균형] 독점기업의 이윤극대화 가격은 한계비용보다 높다(P>MR=MC).", answer: "O", reason: "독점기업은 MR=MC에서 생산하고, 그 생산량에서 수요곡선이 가리키는 가격은 MC보다 높다." },
+            { id: 79, article: "[독점기업의 이윤극대화(계산)] 시장수요가 Q=100-P이고 독점기업의 비용함수가 C=20Q인 독점시장의 균형에서 수요의 가격탄력성(절댓값)은 1.5이다.", answer: "O", reason: "MR=100-2Q=MC=20에서 Q=40, P=60. e=(dQ/dP)(P/Q)=60/40=1.5." },
+            { id: 80, article: "[독점기업의 한계수입(계산)] 독점기업의 수요곡선이 Q_D=100-2P일 때, 가격을 30으로 책정하면 한계수입은 10이다.", answer: "O", reason: "P=50-0.5Q이므로 MR=50-Q. P=30이면 Q=40, MR=10." },
+            { id: 81, article: "[가격차별] 1급(완전)가격차별 시 소비자잉여는 0이며 사중손실도 0이다.", answer: "O", reason: "모든 지불용의금액을 가격으로 책정해 소비자잉여가 독점이윤으로 흡수되고, 산출량이 완전경쟁과 같아 사중손실은 0이다." },
+            { id: 82, article: "[가격차별] 3급 가격차별 시 수요의 가격탄력성이 상대적으로 작은 시장에서 더 높은 가격이 설정된다.", answer: "O", reason: "MR_A=MR_B가 되도록 P(1-1/e)가 같아야 하므로 비탄력적인 시장에서 가격이 더 높다." },
+            { id: 83, article: "[가격차별] 영화관의 조조할인은 2급 가격차별의 대표적인 예이다.", answer: "X", reason: "조조할인은 소비자 특성(시간대·집단)에 따라 구분하는 3급 가격차별의 예이다." },
+            { id: 84, article: "[이부가격] 이부가격제에서 적은 수량을 소비하는 소비자의 평균지불가격은 낮아진다.", answer: "X", reason: "수량과 무관하게 가입비가 부과되므로 적게 소비하는 소비자의 평균지불가격이 더 높다." },
+            { id: 85, article: "[이부가격] 이부가격제에서 가입비의 한도액은 독점기업이 부과할 수 있는 소비자잉여(경쟁시장균형에서의 소비자잉여 크기)이다.", answer: "O", reason: "가입비는 경쟁균형에서의 소비자잉여 크기, 사용료는 경쟁균형 가격(한계비용) 수준으로 부과한다." },
+            { id: 86, article: "[꾸르노 모형] 꾸르노 모형에서 각 기업은 상대방의 생산량이 변화하지 않고 그대로 유지될 것이라고 추측한다.", answer: "O", reason: "꾸르노 모형은 상대방의 생산량을 고정된 것으로 보고 자신의 최적 산출량을 결정하는 수량경쟁 모형이다." },
+            { id: 87, article: "[꾸르노 모형] 두 기업이 완전한 담합을 이루는 경우와 꾸르노 균형의 결과는 동일하다.", answer: "X", reason: "완전담합은 독점과 유사한 결과이므로 꾸르노 균형 결과와 다르다. 꾸르노 모형은 협조가 아닌 경쟁 모형이다." },
+            { id: 88, article: "[베르뜨랑 모형(계산)] 한계비용이 0인 두 기업의 수요함수가 Q1=30-P1+P2, Q2=30-P2+P1(차별화된 상품)일 때, 베르뜨랑 균형가격은 P1=30, P2=30이다.", answer: "O", reason: "반응곡선 2P1-P2=30, 2P2-P1=30을 연립하면 P1=P2=30." },
+            { id: 89, article: "[독점적 경쟁시장] 독점적 경쟁시장의 개별기업은 한계수입이 한계비용보다 높은 수준에서 산출량을 결정한다.", answer: "X", reason: "이윤극대화는 MR=MC에서 이루어지며, 가격은 한계비용(=한계수입)보다 높다." },
+            { id: 90, article: "[독점적 경쟁시장] 독점적 경쟁시장의 개별기업이 직면하는 수요곡선은 우하향하며, 장기적 이윤은 0이다.", answer: "O", reason: "차별화된 상품으로 어느 정도 독점력이 있어 수요곡선이 우하향하고, 자유로운 진입·퇴출로 장기이윤은 0이다." },
+            { id: 91, article: "[우월전략균형과 내쉬균형(계산)] A국·B국의 교역관계 보수행렬이 (A저관세,B저관세)=(250,250), (저,고)=(300,100), (고,저)=(100,300), (고,고)=(200,200)일 때, B국의 우월전략은 저관세이다.", answer: "O", reason: "A의 선택과 무관하게 B는 저관세일 때 보수가 더 크다(250>100, 300>200)." },
+            { id: 92, article: "[우월전략균형과 내쉬균형(계산)] A국·B국의 교역관계 보수행렬이 (A저관세,B저관세)=(250,250), (저,고)=(300,100), (고,저)=(100,300), (고,고)=(200,200)일 때, A국의 우월전략은 고관세이다.", answer: "X", reason: "B의 선택과 무관하게 A도 저관세일 때 보수가 더 크다(250>100, 300>200). 따라서 우월전략균형=내쉬균형=(250,250) 하나이다." },
+            { id: 93, article: "[순차게임(계산)] 이윤행렬에서 A가 슈타켈버그 모형의 선도자, B가 추종자일 때 균형 생산량은 (Q_A,Q_B)=(30,15)이다.", answer: "O", reason: "B의 최적대응은 A가 15→20, 20→20, 30→15. A는 각 경우 375, 400, 450을 얻으므로 30을 선택하고 B는 15를 선택한다." },
+            { id: 94, article: "[생산요소시장 균형과 변화] 기술혁신으로 노동의 한계생산이 증가하면(노동시장 완전경쟁), 균형 노동량과 균형 임금률은 모두 증가한다.", answer: "O", reason: "노동수요곡선이 우상방 이동하여 우상향 공급곡선과 만나므로 노동량과 임금이 모두 증가한다." },
+            { id: 95, article: "[기업의 이윤극대화(요소시장)(계산)] X재 생산에 대해 현재 노동의 한계생산이 15, 평균생산이 17, X재의 시장가격이 20일 때(완전경쟁), 노동의 한계생산물가치(VMP_L)는 300이다.", answer: "O", reason: "VMP_L=P×MP_L=20×15=300. (평균생산은 계산에 쓰이지 않는다.)" },
+            { id: 96, article: "[불완전경쟁과 생산요소시장] 노동시장이 수요독점일 때 균형 고용량은 노동의 한계생산가치곡선과 한계요소비용곡선이 만나는 점에서 결정된다.", answer: "O", reason: "수요독점의 이윤극대화 조건은 MFC=VMP_L이다." },
+            { id: 97, article: "[불완전경쟁과 생산요소시장] 노동시장이 수요독점일 때 한계요소비용곡선은 노동공급곡선의 아래쪽에 위치한다.", answer: "X", reason: "임금이 고용량에 따라 오르므로 MFC곡선은 노동공급곡선의 위쪽에 위치한다." },
+            { id: 98, article: "[불완전경쟁과 생산요소시장] 노동시장이 수요독점이면 완전경쟁인 경우보다 균형 임금률이 낮고 균형 고용량도 적다.", answer: "O", reason: "수요독점자는 고용량을 줄여 임금을 낮추므로 임금과 고용량 모두 완전경쟁보다 낮다(많다는 서술은 틀림)." },
+            { id: 99, article: "[기능별·계층별 소득분배] 소득분배가 완전히 균등한 경우 로렌츠곡선은 대각선이고, 지니계수는 0이며, 십분위분배율은 2이다.", answer: "O", reason: "완전균등이면 로렌츠곡선=대각선, 지니계수=0, 십분위분배율=2(완전불균등이면 지니계수 1, 십분위분배율 0)이다." },
+            { id: 100, article: "[소비의 파레토효율(계산)] X재에 대한 Y재의 한계대체율이 갑은 3, 을은 2일 때 자유로운 거래가 이루어진다면 X재에 대한 Y재의 교환비율은 2 이상 3 이하이다.", answer: "O", reason: "MRS가 다르므로 거래 이득이 있다. 갑(3)과 을(2) 사이의 교환비율에서 두 사람 모두 효용이 증가한다." },
+            { id: 101, article: "[생산의 파레토효율] 생산의 효율성 조건은 두 생산요소 L, K에 대한 X재와 Y재의 한계기술대체율이 같을 때 만족한다.", answer: "O", reason: "생산의 파레토효율은 요소 간 MRTS가 재화 간에 일치할 때 달성된다(계약곡선)." },
+            { id: 102, article: "[생산의 파레토효율] 생산의 효율성 조건·소비의 효율성 조건·종합적 효율성 조건을 모두 만족하는 점들을 X-Y 평면으로 옮겨 놓은 것을 효용가능곡선이라 한다.", answer: "X", reason: "이 점들을 효용평면으로 옮겨 놓은 것이 효용가능경계(효용가능곡선)이다. X-Y 평면으로 옮기면 생산가능곡선이다." },
+            { id: 103, article: "[바람직한 자원배분] 롤스(J.Rawls)적 가치판단을 반영한 사회무차별곡선은 L자형이다.", answer: "O", reason: "롤스는 최소극대화 원칙(최빈곤층 효용 중시)이므로 사회무차별곡선이 L자형이다." },
+            { id: 104, article: "[바람직한 자원배분] 애로우(K.Arrow)의 불가능성 정리에서 파레토원칙은 과반수제를 의미한다.", answer: "X", reason: "파레토원칙은 모든 구성원이 선호하면 사회도 선호한다는 만장일치 원칙이다." },
+            { id: 105, article: "[바람직한 자원배분] 차선의 이론은 부분적 해결책이 최적은 아닐 수 있음을 보여준다.", answer: "O", reason: "효율성 조건이 일부 충족된다고 사회후생이 반드시 커지는 것은 아니며, 오히려 후생이 악화될 수도 있다." },
+            { id: 106, article: "[공공재의 특성] 배제가 불가능하고 경합적인 재화(공유자원)의 예로 공해(公海)상의 물고기가 있다.", answer: "O", reason: "배제불가능+경합적=공유자원(공해상 물고기, 막히는 무료도로). 배제가능+비경합적=비순수공공재(한산한 유료도로)." },
+            { id: 107, article: "[공공재의 최적공급] 순수 공공재는 소비자가 많을수록 개별 소비자가 이용하는 편익이 감소한다.", answer: "X", reason: "공공재는 비경합적이므로 소비자가 많아져도 개별 소비자의 편익은 감소하지 않는다." },
+            { id: 108, article: "[공공재의 최적공급] 순수 공공재의 시장수요는 개별 소비자 수요의 수직합으로 도출된다.", answer: "O", reason: "같은 양을 모두가 소비하므로 각자의 지불용의(한계편익)를 더하는 수직합이다." },
+            { id: 109, article: "[공공재의 최적공급] 순수 공공재를 시장에서 공급하도록 하면 사회적 최적량에 비해 과소공급된다.", answer: "O", reason: "무임승차 문제로 진실한 선호가 표출되지 않아 시장공급량은 사회적 최적량보다 적다." },
+            { id: 110, article: "[외부성의 의의와 효과] 생산 측면에서 부정적 외부효과가 존재할 경우, 시장균형거래량에서 사회적 한계비용이 시장균형가격보다 낮다.", answer: "X", reason: "부정적 외부효과가 있으면 사회적 한계비용이 사적 한계비용보다 커서 시장균형거래량에서 사회적 한계비용이 시장가격보다 높다(과다생산)." },
+            { id: 111, article: "[외부성의 의의와 효과] 생산 측면에서 긍정적 외부효과가 존재할 경우, 시장균형거래량은 사회적 최적거래량보다 작으며 경제적 순손실이 발생한다.", answer: "O", reason: "사적 한계비용이 사회적 한계비용보다 커서 과소생산되고 자중손실이 발생한다." },
+            { id: 112, article: "[외부성과 사회적 최적산출량(계산)] 시장수요곡선이 P=100-2Q, 한계비용이 20이고 제품 한 단위당 20의 환경피해가 발생할 때, 사회적 최적 생산량은 30이고 사회후생의 순손실은 100이다.", answer: "O", reason: "SMC=20+20=40=100-2Q에서 Q=30. 시장균형은 20=100-2Q에서 Q=40. 순손실=(10×20)/2=100." },
+            { id: 113, article: "[최적오염모형(계산)] 온실가스 배출량(Q)을 저감하기 위한 한계저감비용이 40-2Q이고 한계피해비용이 3Q일 때, 최적의 온실가스 배출량은 8이고 그때의 한계저감비용은 24이다.", answer: "O", reason: "한계저감비용=한계피해비용: 40-2Q=3Q에서 Q=8, 한계저감비용=40-16=24." },
+            { id: 114, article: "[코즈정리] 과수원 주인 갑과 양봉업자 을처럼 서로에게 양(+)의 외부성을 주는 경우에도 사회적 비효율이 발생하므로 시장실패에 대한 교정이 불필요하지 않다.", answer: "O", reason: "양(+)의 외부성도 과소생산 등 사회적 비효율을 초래하므로 교정이 필요하다. 거래비용이 없다면 협상으로 최적상태에 도달할 수 있다(코즈정리)." },
+            { id: 115, article: "[코즈정리] 갑이 양봉장을 인수(합병)함으로써 외부성이 내부화되어 사회적 최적생산량을 달성할 수 있다.", answer: "O", reason: "합병을 통해 외부효과를 기업 내부 문제로 인식하게 하여 사회적 최적상태를 달성할 수 있다." },
+            { id: 116, article: "[공유지의 비극(계산)] 염소 방목의 총수입이 R=10(20X-X²), 염소 한 마리당 비용이 20일 때, 주민들이 제한 없이 방목하면 18마리, 마을 전체 이윤을 극대화하려면 9마리를 방목한다.", answer: "O", reason: "자유방목은 평균수입=비용: 200-10X=20에서 X=18. 이윤극대화는 한계수입=비용: 200-20X=20에서 X=9." },
+            { id: 117, article: "[정보경제이론] 동일한 조건과 보험료로 구성된 치아보험에 치아건강상태가 좋은 계층이 더 가입하려는 경향이 있는 것은 역선택이다.", answer: "X", reason: "역선택은 건강상태가 나쁜(사고 위험이 높은) 사람이 더 가입하려는 현상이다." },
+            { id: 118, article: "[정보경제이론] 품질표시제도는 역선택을 방지하기 위한 수단이다.", answer: "O", reason: "정보 비대칭을 줄여 역선택을 완화하는 수단이다. (의료보험의 기초공제제도는 도덕적 해이 방지 수단)" },
+            { id: 119, article: "[행태경제이론] 설문을 어떻게 구성하느냐에 따라 다른 응답이 나오는 효과는 틀짜기 효과(framing effect)이다.", answer: "O", reason: "동일한 상황이라도 인식의 틀이 바뀌면 결정을 바꾸는 경향이다(카너먼의 보건정책 설문 실험)." },
+            { id: 120, article: "[GDP의 개념과 측정(계산)] 소비=300, 투자=200, 민간저축=250, 수출=150, 수입=150, 정부지출=100인 A국의 GDP는 600이고 재정수지는 -50이다.", answer: "O", reason: "GDP=C+I+G+(X-M)=300+200+100+0=600. 민간저축 S=Y-T-C=250에서 T=50, 재정수지=T-G=50-100=-50." },
+            { id: 121, article: "[GDP 포함·불포함 항목] 기존 아파트의 매매가격이 상승하면 실질GDP가 증가한다.", answer: "X", reason: "기존 자산의 거래·가격 상승은 현재 생산이 아니므로 GDP에 포함되지 않는다." },
+            { id: 122, article: "[GDP 포함·불포함 항목] 배 생산이 증가하면 실질GDP가 증가한다.", answer: "O", reason: "실물생산의 증가는 현재 GDP에 포함된다. (주식 주가·이자율·사과 가격 상승은 실질GDP와 무관)" },
+            { id: 123, article: "[GDP vs GNP vs GNI] 폐쇄경제에서 명목GDP는 명목GNI와 크기가 같다.", answer: "O", reason: "국외 요소소득 수취·지급이 없으므로 GDP=GNI이다." },
+            { id: 124, article: "[GDP vs GNP vs GNI] 한국인이 해외에서 벌어들인 요소소득이 외국인이 한국에서 벌어들인 요소소득보다 더 큰 경우에 명목GDP가 명목GNI보다 더 크다.", answer: "X", reason: "GNI=GDP+국외순수취요소소득이므로 이 경우 GNI가 GDP보다 더 크다." },
+            { id: 125, article: "[GDP vs GNP vs GNI] 한국인이 해외에서 벌어들인 이자수입은 한국의 GDP에 포함된다.", answer: "X", reason: "GDP는 국내에서 생산된 것만 포함하므로 해외 이자수입은 GNI에는 포함되지만 한국 GDP에는 포함되지 않는다." },
+            { id: 126, article: "[명목GDP와 실질GDP(계산)] 쌀(2013년 가격10·수량50, 2014년 가격15·수량100)과 컴퓨터(2013년 가격30·수량100, 2014년 가격50·수량200)만 생산하는 국가에서 2013년을 기준연도로 할 때, 2014년의 실질GDP는 7,000원이고 실질GDP성장률은 100%이다.", answer: "O", reason: "2013년 실질GDP=10×50+30×100=3,500. 2014년 실질GDP=10×100+30×200=7,000. 성장률=(7,000-3,500)/3,500=100%." },
+            { id: 127, article: "[물가지수] 소비자물가지수는 GDP 디플레이터보다 소비자들의 생계비를 더 왜곡한다.", answer: "X", reason: "CPI는 소비자가 구매하는 재화·서비스 중심의 지표로 생계비를 나타내며, GDP 디플레이터보다 생계비를 더 잘 반영한다. (다만 CPI도 대체효과·품질개선을 반영 못해 생계비를 과장할 수 있다)" },
+            { id: 128, article: "[물가지수] 소비자물가지수는 기준연도에서 항상 100이다.", answer: "O", reason: "CPI=ΣP_tQ_0/ΣP_0Q_0(라스파이레스 방식)이므로 기준연도에는 100이다." },
+            { id: 129, article: "[물가상승률(계산)] 사과(2014년 수량5·가격2, 2015년 수량10·가격3)와 오렌지(2014년 수량30·가격1, 2015년 수량20·가격1)만 생산하는 A국에서 2014년을 기준연도로 할 때 2015년의 GDP 디플레이터로 계산한 물가상승률은 25%이다.", answer: "O", reason: "2015년 GDP 디플레이터=(3×10+1×20)/(2×10+1×20)=50/40=1.25, 기준연도 디플레이터=1 → 물가상승률 25%." },
+            { id: 130, article: "[케인즈 모형(계산)] 개방경제 모형(C=200+0.7(Y-T), I=200, G=100, T=100, X=300, M=0.2(Y-T))에서 수출이 100만큼 늘어나면 균형소득은 200 증가하고 경상수지는 60 증가한다.", answer: "O", reason: "수출 증가 전 Y=1,500, X-M=20 / 증가 후 Y=1,700, X-M=80. 따라서 ΔY=200, Δ(X-M)=60." },
+            { id: 131, article: "[승수효과(계산)] 케인즈 모형에서 C=0.7Y, I=80일 때, 정부지출이 10에서 20으로 증가하면 균형국민소득의 증가분은 100/3이다.", answer: "O", reason: "정부지출승수=1/(1-0.7)=10/3, ΔY=(10/3)×10=100/3." },
+            { id: 132, article: "[고전학파 모형] 고전학파 모형에서 통화공급이 증가하여 물가가 상승하면 노동의 한계생산이 증가한다.", answer: "X", reason: "통화공급 증가는 물가만 비례해서 올릴 뿐 실질변수(노동의 한계생산, 고용)에는 영향이 없다(화폐의 중립성)." },
+            { id: 133, article: "[고전학파 모형] 세이의 법칙(Say's law)이 성립하면 수요측면은 국민소득 결정에 영향을 미치지 못한다.", answer: "O", reason: "공급이 스스로 수요를 창출하므로 국민소득은 공급에 의해 결정된다." },
+            { id: 134, article: "[IS-LM 모형의 이해] C=α+β(Y-T), I=I0-δr인 모형에서 한계소비성향 β가 증가하면 IS곡선 기울기의 절댓값이 커진다.", answer: "X", reason: "IS곡선의 기울기는 -(1-β)/δ이므로 β가 증가하면 기울기의 절댓값이 작아진다(완만)." },
+            { id: 135, article: "[IS-LM 모형의 이해] C=α+β(Y-T), I=I0-δr인 모형에서 이자율에 대한 투자의 민감도 δ가 증가하면 IS곡선 기울기의 절댓값이 작아진다.", answer: "O", reason: "기울기 -(1-β)/δ의 절댓값은 δ가 클수록 작아진다." },
+            { id: 136, article: "[IS-LM 균형의 계산] 폐쇄경제모형(C=100+0.5(Y-T), I=100-25r, G=T=100)에서 생산물시장의 균형을 나타내는 IS곡선은 r=10-0.02Y이다.", answer: "O", reason: "Y=100+0.5(Y-100)+100-25r+100 → 0.5Y=250-25r → r=10-0.02Y." },
+            { id: 137, article: "[IS-LM 모형과 재정정책] 정부지출을 10만큼 늘렸을 때 총수요가 10보다 적게 늘어난 이유는 이자율 변화에 따른 투자감소(구축효과) 때문이다.", answer: "O", reason: "재정지출 증가→소득 증가→화폐수요 증가→이자율 상승→투자 감소(구축효과)로 승수효과가 상쇄된다." },
+            { id: 138, article: "[IS-LM 모형과 통화정책(물가하락)] 폐쇄경제 IS-LM모형(IS 우하향, LM 우상향)에서 물가 수준이 하락하면 명목이자율이 하락하고 투자가 감소한다.", answer: "X", reason: "물가 하락→실질통화량 증가→LM곡선 우측이동→이자율 하락→투자·소비 증가, 균형소득 증가. 투자는 증가한다(명목통화량은 불변)." },
+            { id: 139, article: "[재정·통화정책의 상대적 유효성] 폐쇄경제 IS-LM모형에서 정부가 지출을 증가시키고 중앙은행이 통화량을 증가시키면, 국민소득은 증가하지만 이자율의 변화방향은 알 수 없다.", answer: "O", reason: "재정지출 증가는 IS 우측이동(이자율↑), 통화량 증가는 LM 우측이동(이자율↓)이므로 소득은 증가하고 이자율은 불확실하다." },
+            { id: 140, article: "[유동성함정] 유동성함정에서는 LM곡선이 수평선이며, 화폐수요의 이자율 탄력성이 무한대일 때 나타난다.", answer: "O", reason: "이자율이 매우 낮을 때 화폐수요가 무한히 증가하는 영역으로 LM곡선이 수평이다." },
+            { id: 141, article: "[유동성함정] 유동성함정에서는 재정정책이 국민소득에 영향을 주지 않는다.", answer: "X", reason: "LM곡선이 수평이라 구축효과 없이 승수효과가 나타나므로 재정정책은 효과가 최대이고, 통화정책은 효과가 없다." },
+            { id: 142, article: "[AD곡선의 도출] 총수요곡선이 우하향하는 이유를 가장 적절히 설명하면, 물가수준이 하락하면 실질화폐공급의 증가로 이자율이 하락하여 투자가 증가하기 때문이다.", answer: "O", reason: "물가 하락→실질통화량 증가→이자율 하락→투자(및 소비) 증가→총수요 증가(케인즈 이자율 효과)." },
+            { id: 143, article: "[AS곡선의 도출] 케인즈에 따르면 명목임금이 고정되어 있는 단기에서 물가가 상승하면 고용량이 증가하여 생산량이 증가한다.", answer: "O", reason: "명목임금 고정 시 물가 상승→실질임금 하락→노동수요 증가→고용·생산 증가." },
+            { id: 144, article: "[AS곡선의 도출] 가격경직성 모형(sticky-price model)에서 물가수준이 기대 물가수준보다 낮다면 생산량은 자연산출량 수준보다 높다.", answer: "X", reason: "물가가 기대물가보다 낮으면 생산량은 자연산출량보다 낮다." },
+            { id: 145, article: "[AS곡선의 도출] 불완전정보 모형에서 기대 물가수준이 상승하면 단기총공급곡선은 오른쪽으로 이동한다.", answer: "X", reason: "기대물가가 상승하면 단기총공급곡선은 좌상방(왼쪽)으로 이동한다." },
+            { id: 146, article: "[AD-AS 모형의 균형(계산)] 총수요곡선 P=-Y^D+2, 총공급곡선 P=P^e+(Y^S-1)에서 P^e=1.5이면 균형은 P=1.25, Y=0.75이다.", answer: "O", reason: "AS: P=Y+0.5. -P+2=P-0.5에서 P=1.25, Y=0.75. 실제물가(1.25)≠기대물가(1.5)이므로 장기균형이 아니다." },
+            { id: 147, article: "[AD-AS 모형의 균형(계산)] 합리적 기대 가설에서는 기대물가수준 P^e가 반드시 균형물가 1.25와 일치한다.", answer: "X", reason: "합리적 기대는 이용 가능한 정보를 활용한 예측이지만 정보가 불완전하면 예측오차가 발생할 수 있다." },
+            { id: 148, article: "[공급충격과 거시경제균형] 총수요-총공급 모형에서 일시적인 음(-)의 공급충격이 발생했을 때 확장적 통화정책은 국민소득을 감소시킨다.", answer: "X", reason: "음의 공급충격 시 확장적 통화정책은 감소한 소득을 회복시킬 수 있으나 물가를 더욱 상승시킨다." },
+            { id: 149, article: "[공급충격과 거시경제균형] 음(-)의 공급충격은 스태그플레이션을 발생시키며, 통화정책(또는 재정정책)으로 물가하락과 국민소득 증가를 동시에 달성할 수 없다.", answer: "O", reason: "단기총공급곡선이 좌상방 이동하여 물가는 상승하고 소득은 감소한다. 총수요관리정책은 물가와 소득 간 딜레마에 직면한다." },
+            { id: 150, article: "[실업의 개념과 분류] 현재의 실업률에서 실망실업자(discouraged workers)가 많아지면 실업률은 하락한다.", answer: "O", reason: "실망실업자는 비경제활동인구로 분류되어 실업자·경제활동인구에서 제외되므로 실업률이 하락한다." },
+            { id: 151, article: "[실업의 개념과 분류] 더 좋은 직장을 구하기 위해 잠시 직장을 그만둔 경우는 경기적 실업에 해당한다.", answer: "X", reason: "직장을 옮기는 과정의 마찰적(탐색적) 실업이며 자발적 실업이다. 경기적 실업은 경기침체에 따라 발생하는 비자발적 실업이다." },
+            { id: 152, article: "[실업의 개념과 분류] 만 15세 미만 인구도 실업률 측정 대상에 포함된다.", answer: "X", reason: "경제활동인구는 만 15세 이상 생산가능인구 중 일할 능력과 의사가 있는 사람이므로 15세 미만은 제외된다." },
+            { id: 153, article: "[실업률 계산(계산)] 만 15세 이상 인구 1,250만 명, 비경제활동인구 250만 명, 취업자 900만 명인 갑국의 경제활동참가율은 80%, 실업률은 10%, 고용률은 72%이다.", answer: "O", reason: "경제활동인구=1,000만, 실업자=100만. 참가율=1,000/1,250=80%, 실업률=100/1,000=10%, 고용률=900/1,250=72%." },
+            { id: 154, article: "[자연실업률의 결정(계산)] 경제활동인구가 6,000만 명이고 실직률이 0.05, 구직률이 0.2인 A국의 균형상태에서 실업자의 수는 1,200만 명이다.", answer: "O", reason: "자연실업률=s/(s+f)=0.05/0.25=0.2, 실업자 수=6,000만×0.2=1,200만 명." },
+            { id: 155, article: "[비자발적 실업의 원인(효율성임금)] 효율성임금이론에 따르면 기업이 균형임금보다 높은 임금을 지급하면 노동자의 생산성을 높일 수 있고 이직률도 낮출 수 있다.", answer: "O", reason: "근무태만모형(태만 방지), 역선택모형(우수 인력 채용), 이직모형(이직 방지·훈련비용 절감)으로 설명한다." },
+            { id: 156, article: "[비자발적 실업의 원인(효율성임금)] 효율성임금이론의 근무태만모형(shirking model)에 따르면 높은 임금은 노동자의 근무태만을 늘린다.", answer: "X", reason: "높은 실질임금을 제공하면 노동자의 근무태만을 방지하여 생산성을 높일 수 있다." },
+            { id: 157, article: "[인플레이션의 효과(비용)] 디플레이션(deflation)은 인플레이션이 진행되는 상황에서 경제가 침체하는 상황을 말한다.", answer: "X", reason: "그 설명은 스태그플레이션이다. 디플레이션은 물가수준이 지속적으로 하락하는 현상이며, 물가는 오르되 상승률이 줄어드는 것은 디스인플레이션이다." },
+            { id: 158, article: "[인플레이션의 효과(비용)] 구두창비용은 인플레이션에 따라 발생하는 현금 관리 비용(은행 방문 등 시간·교통비)을 말한다.", answer: "O", reason: "물가상승 시 현금보유를 줄이고 은행을 자주 방문해야 하는 데서 생기는 비용이다." },
+            { id: 159, article: "[인플레이션과 이자율(피셔방정식)] 명목이자율=1%, 물가상승률=-10%인 경우의 실질이자율(11%)이 명목이자율=10%, 물가상승률=10%인 경우의 실질이자율(0%)보다 높다.", answer: "O", reason: "피셔방정식: 명목이자율=실질이자율+물가상승률. 실질이자율은 각각 11%와 0%이다. (①0%, ③4%, ④9% 중에서도 11%가 가장 높다)" },
+            { id: 160, article: "[필립스곡선] 원유가격의 상승은 단기 필립스곡선을 아래쪽으로 이동시킨다.", answer: "X", reason: "원유가격 상승은 공급충격으로 단기 필립스곡선을 위쪽(우상방)으로 이동시킨다(스태그플레이션)." },
+            { id: 161, article: "[필립스곡선] 기대인플레이션의 상승은 단기 필립스곡선을 아래쪽으로 이동시킨다.", answer: "X", reason: "기대인플레이션이 상승하면 단기 필립스곡선은 위쪽으로 이동한다(π=π^e-b(u-u_N))." },
+            { id: 162, article: "[필립스곡선] 합리적 기대하에서 예상치 못한 통화정책은 인플레이션율과 실업률의 조합점을 단기 필립스곡선상에서 이동시킨다.", answer: "O", reason: "예상치 못한 정책은 단기적으로 필립스곡선상의 이동으로 정책효과가 나타난다. 예상된 정책은 장기 필립스곡선상에서 이동한다." },
+            { id: 163, article: "[경기변동이론] 실물경기변동이론(real business cycle)은 통화량 변동 정책이 장기적으로 실질 국민소득에 영향을 준다고 주장한다.", answer: "X", reason: "실물경기변동이론은 화폐의 중립성을 가정하여 통화량이 단기·장기 모두 실질소득에 영향이 없고, 기술충격 등 실물충격이 경기변동의 원인이라고 본다." },
+            { id: 164, article: "[경기변동이론] 실물경기변동이론에 따르면 불경기에도 가계는 기간별 소비선택의 최적조건에 따라 소비를 결정한다.", answer: "O", reason: "경기변동은 시장청산 균형에서 합리적 선택의 결과로 나타나며, 불경기에도 가계는 최적 소비 결정을 한다." },
+            { id: 165, article: "[경기안정화정책 논쟁(계산)] 통화당국의 손실함수 L=u+(1/2)π², 필립스곡선 π=π^e-(1/2)(u-u_n)에서 민간의 기대가 형성된 후 손실을 최소화하는 목표 인플레이션율은 2%이다.", answer: "O", reason: "u=-2π+2π^e+u_n을 손실함수에 대입: L=-2π+2π^e+u_n+π²/2. dL/dπ=-2+π=0 → π=2." },
+            { id: 166, article: "[테일러준칙] A국에서 인플레이션갭과 산출량갭이 모두 확대될 때, 테일러준칙에 따르면 중앙은행은 정책금리를 인상한다.", answer: "O", reason: "i=(π+r*)+0.5(π-π*)+0.5(Y-Y_F)/Y_F에서 두 갭이 커지면 정책금리를 올려야 한다(긴축적 통화정책)." },
+            { id: 167, article: "[절대소득이론] 한계소비성향은 소비의 증가분을 가처분소득의 증가분으로 나눈 것이다.", answer: "O", reason: "MPC=ΔC/ΔY_d이며 0<MPC<1이다. (소비를 소득으로 나눈 것은 평균소비성향)" },
+            { id: 168, article: "[랜덤워크가설·상대소득가설] 항상소득가설(permanent income hypothesis)에 따르면 현재소득이 일시적으로 항상소득보다 작게 되면 평균소비성향은 일시적으로 증가한다.", answer: "O", reason: "소득 감소분 중 일시소득 감소분은 소비를 변화시키지 않으므로 단기 평균소비성향(C/Y=βY^P/Y)이 증가한다." },
+            { id: 169, article: "[랜덤워크가설·상대소득가설] 생애주기가설(life-cycle hypothesis)은 소비자가 저축은 할 수 있으나 차입에는 제약(borrowing constraints)이 있다고 가정한다.", answer: "X", reason: "생애주기가설·항상소득가설은 소비자가 차입제약에 직면하지 않는다(자유로운 차입·저축 가능)고 가정한다." },
+            { id: 170, article: "[투자이론] 고전학파는 투자가 이자율이 아니라 소득에 의해 결정된다고 주장한다.", answer: "X", reason: "고전학파는 투자가 소득이 아니라 이자율(I=I(r), 이자율의 감소함수)에 의해 결정된다고 본다." },
+            { id: 171, article: "[투자이론] 소비수요는 사전적으로 계획된 소비를 말한다.", answer: "O", reason: "소비수요는 사후적으로 실현된 소비가 아니라 사전적으로 계획·예정된 소비를 의미한다." },
+            { id: 172, article: "[리카도 동등성 정리] 정부지출수준이 일정할 때 정부지출의 재원조달방법(조세·국채)의 변화는 민간부문의 경제활동에 아무런 영향을 주지 않는다는 것은 리카도(Ricardian)의 동등성 정리이다.", answer: "O", reason: "국채 발행은 미래 조세부담 증가이므로 민간은 현재 감세로 늘어난 가처분소득을 저축하여 소비가 변하지 않는다." },
+            { id: 173, article: "[화폐수요] 이자율이 상승하면 투기적 동기의 현금통화 수요량이 감소한다.", answer: "O", reason: "투기적(투자적) 화폐수요는 이자율과 역(-)의 관계이다(화폐보유의 기회비용 증가)." },
+            { id: 174, article: "[화폐수요] 물가가 상승하면 거래적 동기의 현금통화 수요는 감소한다.", answer: "X", reason: "물가가 오르면 명목거래금액이 커져 화폐수요(거래적 수요)는 증가한다." },
+            { id: 175, article: "[본원통화와 지급준비금] 추가로 발행된 모든 화폐가 은행의 시재금(vault cash)으로 보관된다면 본원통화는 증가하지 않는다.", answer: "X", reason: "시재금도 지급준비금에 포함되므로 본원통화(현금통화+지급준비금)는 증가한다." },
+            { id: 176, article: "[본원통화와 지급준비금] 본원통화는 중앙은행의 화폐발행액과 은행의 중앙은행 지준예치금의 합과 같다.", answer: "O", reason: "지급준비금=시재금+지준예치금이고, 현금통화+시재금=화폐발행액이므로 본원통화=화폐발행액+지준예치금이다." },
+            { id: 177, article: "[통화량과 통화승수(계산)] 현금보유비율(cr=C/D)이 0.2, 지급준비율(rr=R/D)이 0.1이면 통화승수의 크기는 4.0이다.", answer: "O", reason: "m=(k+1)/(k+r)=(0.2+1)/(0.2+0.1)=4." },
+            { id: 178, article: "[통화정책의 수단] 한국은행의 물가안정목표제는 고용증진 목표 달성을 위해 시행하는 제도이다.", answer: "X", reason: "물가안정목표제는 물가안정을 목표로 하는 통화정책 운영방식이며, 고용증진 목표를 위한 제도가 아니다. (공개시장운영·재할인율·지급준비율 정책은 통화량 조절 수단)" },
+            { id: 179, article: "[솔로우 모형 일반] 솔로우 성장모형에서 저축의 증가가 지속적인 성장을 초래하지 않는 원인은 자본의 한계생산성이 감소하기 때문이다.", answer: "O", reason: "자본이 축적될수록 1인당 자본의 한계생산이 감소해 자본유지를 위한 투자가 늘고, 결국 1인당 자본이 불변인 균제상태에 도달한다(수준효과만 있고 성장효과는 없음)." },
+            { id: 180, article: "[솔로우 모형: 균제상태(계산)] 생산함수 Y=√(KL), 감가상각률 δ=20%, 저축률 s=40%(인구증가·기술진보 없음)인 솔로우 모형의 균제상태에서 1인당 소득은 2, 1인당 소비는 1.2이다.", answer: "O", reason: "y=k^0.5, k*=(sA/(n+δ))^(1/(1-α))=(0.4/0.2)²=4. y=2, 저축=0.8이므로 소비=2-0.8=1.2." },
+            { id: 181, article: "[솔로우 모형: 황금률(계산)] 인구 증가와 기술진보가 없는 솔로우 모형에서 1인당 생산함수가 y=5k^0.4일 때, 황금률을 달성하게 하는 저축률은 0.4이다.", answer: "O", reason: "황금률의 저축률은 자본소득분배율(자본의 지분) α와 같으므로 s_G=α=0.4." },
+            { id: 182, article: "[성장회계(계산)] 명목GDP 증가율, 물가상승률, 인구증가율이 각각 연 5%, 3%, 1%일 때 1인당 실질GDP의 증가율은 1%이다.", answer: "O", reason: "실질GDP 증가율=5%-3%=2%, 1인당 실질GDP 증가율=2%-1%=1%." },
+            { id: 183, article: "[내생적 성장이론] 교육 투자지출을 증가시켜 인적 자본을 증가시키는 것은 장기적으로 경제성장을 촉진시킬 수 있는 방법이다.", answer: "O", reason: "인적자본은 생산성을 지속적으로 높여 수확체감을 극복하므로 내생적 성장이론에서 지속적 성장의 원천이 된다." },
+            { id: 184, article: "[내생적 성장이론] 저축률을 낮추어 소비를 증가시키면 장기적으로 경제성장이 촉진된다.", answer: "X", reason: "저축률 하락은 투자 감소와 자본축적 저해로 이어져 장기적으로 성장을 저해할 가능성이 크다." },
+            { id: 185, article: "[자유무역의 효과] A국에서 교역 이전 X재의 국내가격이 국제가격보다 높아 교역 후 초과수요분을 수입한다면, 교역 전과 비교하여 교역 후 생산자잉여가 감소한다.", answer: "O", reason: "국내가격이 국제가격보다 높으면 수입국이 되어 가격이 하락한다. 소비자잉여는 B+C 증가, 생산자잉여는 B 감소, 총잉여는 C 증가." },
+            { id: 186, article: "[리카도 무역이론(계산)] 갑국(X재 5, Y재 10)과 을국(X재 8, Y재 13)의 단위당 생산비가 주어졌을 때, 두 나라 모두 이익을 얻을 수 있는 교역조건(P_X/P_Y)은 0.55이다.", answer: "O", reason: "갑국의 X재 상대가격 5/10=0.5, 을국의 8/13≈0.615. 교역조건이 0.5와 0.615 사이여야 두 나라 모두 이익이다." },
+            { id: 187, article: "[헥셔-올린 이론] A국은 자본이 상대적으로 풍부하고 B국은 노동이 풍부할 때(부분특화), 헥셔-올린 모형과 스톨퍼-새뮤엘슨 정리에 따르면 A국 노동자의 실질소득은 감소하고 B국 노동자의 실질소득은 증가한다.", answer: "O", reason: "B국은 노동집약재를 수출하므로 노동의 실질소득이 증가하고, A국은 자본집약재를 수출하므로 노동의 실질소득이 감소한다." },
+            { id: 188, article: "[헥셔-올린 이론] A국은 자본이 풍부하고 B국은 노동이 풍부할 때 자유무역이 이루어지면 B국 자본가의 실질소득이 증가한다.", answer: "X", reason: "B국은 노동집약재 수출국이므로 노동의 실질소득은 증가하고 자본의 실질소득은 감소한다." },
+            { id: 189, article: "[관세정책] 소규모 개방경제에서 수입소비재 A재에 관세를 부과하면 국내 소비는 감소한다.", answer: "O", reason: "관세로 국내가격이 P^W+t로 상승하여 소비량이 D1에서 D2로 감소한다. 생산자잉여는 증가, 소비자잉여는 감소, 자중손실(b+d) 발생." },
+            { id: 190, article: "[관세정책] 소규모 개방경제에서 수입소비재에 관세를 부과하면 국내 사회적 총잉여는 증가한다.", answer: "X", reason: "소비자잉여 감소(a+b+c+d), 생산자잉여 증가(a), 관세수입(c)을 더하면 자중손실 b+d만큼 총잉여가 감소한다." },
+            { id: 191, article: "[국제수지표] 한국인의 해외주식 취득은 경상수지에 기록되지 않는다.", answer: "O", reason: "해외주식 취득은 금융계정(자본금융계정)에 기록된다. (상품수출·관광지출·원조·근로소득 송금은 경상수지)" },
+            { id: 192, article: "[국제수지 결정이론] 조세와 정부지출의 차이(T-G)가 음(-)이고 순수출(NX)이 양(+)일 때(Y=C+I+G+NX), 민간저축은 민간투자보다 많다.", answer: "O", reason: "(S-I)+(T-G)=NX에서 NX>0, T-G<0이면 S-I=NX-(T-G)>0이다. 민간저축>민간투자." },
+            { id: 193, article: "[국제수지 결정이론] 순수출이 양(+)이면 순대외채권은 전년 말에 비해 감소한다.", answer: "X", reason: "순수출(경상수지) 흑자가 지속되면 순대외채권은 증가한다." },
+            { id: 194, article: "[환율의 의의] 미국인의 국내주식에 대한 투자 증가는 원/달러 환율의 하락(원화 강세) 요인이다.", answer: "O", reason: "외환(달러) 유입이 증가하여 환율이 하락한다." },
+            { id: 195, article: "[환율의 의의] 미국 기준금리 상승은 원/달러 환율의 하락(원화 강세) 요인이다.", answer: "X", reason: "국내 외화자본이 미국으로 유출되므로 환율상승(원화 약세) 요인이다. (재미교포 송금 감소, 미국산 수입품 수요 증가, 미국 관광객 감소도 환율상승 요인)" },
+            { id: 196, article: "[구매력 평가설] 구매력 평가설이 성립할 때, 외국의 양적완화정책으로 외국의 물가가 상승하면 자국의 실질 순수출이 증가한다.", answer: "X", reason: "구매력 평가설이 성립하면 실질환율이 1로 불변이므로 외국 물가가 상승해도 실질 순수출은 불변이다." },
+            { id: 197, article: "[구매력 평가설] 구매력 평가설이 성립할 때, 자국의 통화량이 증가해도 실질환율은 변화하지 않는다.", answer: "O", reason: "구매력평가가 성립하면 실질환율 q=eP*/P=1이므로 통화량이 증가해도 불변이다." },
+            { id: 198, article: "[이자율 평가설(계산)] 우리나라 채권의 연간 명목수익률 5%, 미국채권 2.5%, 현물환율 1,200원/달러일 때, 이자율 평가설이 성립한다면 연간 선물환율은 1,230원/달러이다.", answer: "O", reason: "i=i*+(F-S)/S → 0.05=0.025+(F-1,200)/1,200 → F=1,230." },
+            { id: 199, article: "[IS-LM-BP 모형(고정환율제)] 고정환율제도하에서 자본이동이 완전한 경우 정부지출과 조세를 동일한 크기만큼 증가시켰을 때 장기 거시경제 균형에서 실질GDP는 원래 수준으로 돌아가 불변이다.", answer: "O", reason: "확대재정→이자율 상승→자본유입→환율하락 압력→통화량 증가(LM 우측이동)로 소득이 증가하나, 장기에 물가가 상승하여 총공급곡선이 좌상방 이동하며 실질GDP는 원래 수준으로 돌아간다." },
+            { id: 200, article: "[IS-LM-BP 모형(고정환율제)] 고정환율제도하에서 자본이동이 완전한 경우 정부지출과 조세를 동일한 크기만큼 증가시켰을 때 장기에는 순수출이 불변이다.", answer: "X", reason: "장기에 물가가 상승하면 실질환율이 하락하고 순수출은 감소한다(총수요 불변·물가 상승)." }
         ];
 
         let rawDeck = loadStoredDeck();
         let currentDeck = [...rawDeck];
-        let currentIndex = 0;
-        let isFlipped = false;
+        let sel = 0;
         let currentFilter = 'ALL';
         const userAnswers = loadStoredAnswers();
-
-        const flashcard = document.getElementById('flashcard');
-        const cardContainer = document.getElementById('cardContainer');
-        const articleText = document.getElementById('articleText');
-        const reasonText = document.getElementById('reasonText');
-        const correctAnswerDisplay = document.getElementById('correctAnswerDisplay');
-        const progressText = document.getElementById('progressText');
-        const progressBar = document.getElementById('progressBar');
-        const resultBadge = document.getElementById('resultBadge');
-        const cardBadge = document.getElementById('cardBadge');
-        const btnAnswerO = document.getElementById('btnAnswerO');
-        const btnAnswerX = document.getElementById('btnAnswerX');
-        const btnPrev = document.getElementById('btnPrev');
-        const btnNext = document.getElementById('btnNext');
+        const revealed = {};
+        const tb = document.getElementById('tb');
 
         function loadStoredDeck() {
             try {
@@ -403,326 +308,198 @@
                     const parsed = JSON.parse(saved);
                     if (Array.isArray(parsed) && parsed.length > 0) return parsed;
                 }
-            } catch(e) {
-                console.error("저장된 문제 덱 로드 실패:", e);
-            }
+            } catch(e) {}
             return [...defaultDeck];
         }
-
         function loadStoredAnswers() {
             try {
                 const saved = localStorage.getItem(STORAGE_KEY_ANSWERS);
                 if (saved) return JSON.parse(saved);
-            } catch(e) {
-                console.error("저장된 답안 히스토리 로드 실패:", e);
-            }
+            } catch(e) {}
             return {};
         }
-
-        function saveDeckToStorage() {
-            try {
-                localStorage.setItem(STORAGE_KEY_DECK, JSON.stringify(rawDeck));
-            } catch(e) {
-                console.error("문제 덱 저장 실패:", e);
-            }
-        }
-
-        function saveAnswersToStorage() {
-            try {
-                localStorage.setItem(STORAGE_KEY_ANSWERS, JSON.stringify(userAnswers));
-            } catch(e) {
-                console.error("답안 히스토리 저장 실패:", e);
-            }
-        }
+        function saveDeckToStorage() { try { localStorage.setItem(STORAGE_KEY_DECK, JSON.stringify(rawDeck)); } catch(e) {} }
+        function saveAnswersToStorage() { try { localStorage.setItem(STORAGE_KEY_ANSWERS, JSON.stringify(userAnswers)); } catch(e) {} }
+        function getCardKey(card) { return card.id || `card-${card.article}`; }
+        function norm(a) { return (a || "O").trim().toUpperCase(); }
 
         function resetToDefaultDeck() {
-            if (confirm("기본 문제 덱으로 초기화하고 풀이 기록을 지우시겠습니까?")) {
+            if (confirm("기본 데이터로 초기화하고 입력 기록을 지우시겠습니까?")) {
                 localStorage.removeItem(STORAGE_KEY_DECK);
                 localStorage.removeItem(STORAGE_KEY_ANSWERS);
                 rawDeck = [...defaultDeck];
-                for (let key in userAnswers) delete userAnswers[key];
-                saveDeckToStorage();
-                saveAnswersToStorage();
+                for (let k in userAnswers) delete userAnswers[k];
+                for (let k in revealed) delete revealed[k];
+                saveDeckToStorage(); saveAnswersToStorage();
                 setFilter('ALL');
             }
         }
 
-        // 🎲 Fisher-Yates 카드 셔플 함수
         function shuffleDeck() {
-            if (currentDeck.length <= 1) {
-                alert("섞을 카드가 2개 이상이어야 합니다.");
-                return;
-            }
-
+            if (currentDeck.length <= 1) return;
             for (let i = currentDeck.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [currentDeck[i], currentDeck[j]] = [currentDeck[j], currentDeck[i]];
             }
-
-            currentIndex = 0;
-            renderCard();
+            sel = 0;
+            render();
         }
 
-        function getCardKey(card) {
-            return card.id || `card-${card.article}`;
+        function esc(s) { return String(s == null ? "" : s).replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
+
+        function render() {
+            updateCounts();
+            let html = "";
+            currentDeck.forEach((card, i) => {
+                const key = getCardKey(card);
+                const ua = userAnswers[key];
+                const show = !!ua || !!revealed[key];
+                const ans = norm(card.answer);
+                const cls = ua ? (ua.isCorrect ? "ok" : "ng") : "";
+                html += `<tr data-i="${i}" class="${i === sel ? 'sel' : ''}">` +
+                    `<td class="rn">${i + 2}</td>` +
+                    `<td class="c">${esc(card.id || i + 1)}</td>` +
+                    `<td class="t${i === sel ? ' act' : ''}">${esc(card.article)}</td>` +
+                    `<td class="c ${cls}">${ua ? esc(ua.userAns) : ""}</td>` +
+                    `<td class="c ${cls}">${show ? ans : ""}</td>` +
+                    `<td class="t">${show ? esc(card.reason) : ""}</td></tr>`;
+            });
+            if (!currentDeck.length) html = `<tr><td class="rn">2</td><td></td><td class="t">해당하는 데이터가 없습니다.</td><td></td><td></td><td></td></tr>`;
+            tb.innerHTML = html;
+            updateBars();
         }
 
-        cardContainer.addEventListener('click', (e) => {
-            if (e.target.closest('button')) return;
+        function updateBars() {
+            const n = currentDeck.length;
+            document.getElementById('namebox').textContent = n ? "B" + (sel + 2) : "B2";
+            document.getElementById('fval').textContent = n ? currentDeck[sel].article : "";
+            document.getElementById('stat').textContent = n ? `${sel + 1} / ${n}` : "개수: 0";
+        }
 
-            isFlipped = !isFlipped;
-            if (isFlipped) {
-                flashcard.classList.add('rotate-y-180');
-            } else {
-                flashcard.classList.remove('rotate-y-180');
+        function select(i, scroll) {
+            if (!currentDeck.length) return;
+            sel = Math.max(0, Math.min(currentDeck.length - 1, i));
+            const rows = tb.children;
+            for (let r = 0; r < rows.length; r++) {
+                rows[r].classList.toggle('sel', r === sel);
+                const t = rows[r].children[2];
+                if (t) t.classList.toggle('act', r === sel);
             }
+            updateBars();
+            if (scroll) rows[sel].scrollIntoView({ block: 'nearest' });
+        }
+        function move(d) { select(sel + d, true); }
+
+        tb.addEventListener('click', e => {
+            const tr = e.target.closest('tr');
+            if (tr && tr.dataset.i !== undefined) select(parseInt(tr.dataset.i, 10), false);
         });
 
-        function renderCard() {
-            updateFilterCounts();
-
-            if (currentDeck.length === 0) {
-                articleText.textContent = "해당하는 카드가 없습니다.";
-                reasonText.textContent = "";
-                correctAnswerDisplay.textContent = "";
-                progressText.textContent = "0 / 0";
-                progressBar.style.width = '0%';
-                cardBadge.textContent = "";
-                resultBadge.className = "hidden";
-                btnAnswerO.disabled = true;
-                btnAnswerX.disabled = true;
-                btnPrev.disabled = true;
-                btnNext.disabled = true;
-                return;
-            }
-
-            btnAnswerO.disabled = false;
-            btnAnswerX.disabled = false;
-
-            if (isFlipped) {
-                unflipCardSilently();
-            }
-
-            const currentCard = currentDeck[currentIndex];
-            articleText.textContent = currentCard.article || "지문 내용이 없습니다.";
-            reasonText.textContent = currentCard.reason || "상세 해설이 없습니다.";
-            
-            const rawAns = (currentCard.answer || "O").trim().toUpperCase();
-            correctAnswerDisplay.textContent = rawAns === 'O' ? "O (옳은 지문)" : "X (틀린 지문)";
-            
-            if (rawAns === 'O') {
-                correctAnswerDisplay.className = "text-2xl font-black text-emerald-400";
-            } else {
-                correctAnswerDisplay.className = "text-2xl font-black text-rose-400";
-            }
-
-            const key = getCardKey(currentCard);
-            const pastAnswer = userAnswers[key];
-            if (pastAnswer) {
-                showResultBadge(pastAnswer.isCorrect, pastAnswer.userAns);
-            } else {
-                resultBadge.className = "hidden";
-            }
-
-            btnPrev.disabled = currentIndex === 0;
-            btnNext.disabled = currentIndex === currentDeck.length - 1;
-
-            const total = currentDeck.length;
-            const currentNum = currentIndex + 1;
-            progressText.textContent = `${currentNum} / ${total}`;
-            progressBar.style.width = `${(currentNum / total) * 100}%`;
-            cardBadge.textContent = `No. ${currentCard.id || currentNum}`;
-        }
-
-        function unflipCardSilently() {
-            isFlipped = false;
-            correctAnswerDisplay.textContent = "";
-            reasonText.textContent = "";
-
-            flashcard.style.transition = 'none';
-            flashcard.classList.remove('rotate-y-180');
-            
-            void flashcard.offsetHeight;
-            flashcard.style.transition = '';
-        }
-
-        function showResultBadge(isCorrect, userAns) {
-            resultBadge.classList.remove('hidden');
-            if (isCorrect) {
-                resultBadge.textContent = `정답! (내가 택한 답: ${userAns})`;
-                resultBadge.className = "text-xs font-bold px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 border border-emerald-200";
-            } else {
-                resultBadge.textContent = `오답 (내가 택한 답: ${userAns})`;
-                resultBadge.className = "text-xs font-bold px-3 py-1 rounded-full bg-rose-100 text-rose-700 border border-rose-200";
-            }
-        }
-
-        function submitAnswer(userAns) {
-            if (currentDeck.length === 0) return;
-            const currentCard = currentDeck[currentIndex];
-            const rawAns = (currentCard.answer || "O").trim().toUpperCase();
-            const isCorrect = userAns === rawAns;
-
-            const key = getCardKey(currentCard);
-            userAnswers[key] = { isCorrect, userAns };
+        function answer(userAns) {
+            if (!currentDeck.length) return;
+            const card = currentDeck[sel];
+            const key = getCardKey(card);
+            userAnswers[key] = { isCorrect: userAns === norm(card.answer), userAns };
             saveAnswersToStorage();
-
-            showResultBadge(isCorrect, userAns);
-
-            if (!isFlipped) {
-                isFlipped = true;
-                flashcard.classList.add('rotate-y-180');
-            }
-
-            updateFilterCounts();
+            keepRender();
         }
-
-        function prevCard() {
-            if (currentIndex > 0) {
-                currentIndex--;
-                renderCard();
-            }
-        }
-
-        function nextCard() {
-            if (currentIndex < currentDeck.length - 1) {
-                currentIndex++;
-                renderCard();
-            }
-        }
-
-        function resetCurrentCardState() {
-            if (currentDeck.length === 0) return;
-            const currentCard = currentDeck[currentIndex];
-            const key = getCardKey(currentCard);
-            delete userAnswers[key];
+        function clearAnswer() {
+            if (!currentDeck.length) return;
+            const key = getCardKey(currentDeck[sel]);
+            delete userAnswers[key]; delete revealed[key];
             saveAnswersToStorage();
-            renderCard();
+            keepRender();
+        }
+        function toggleReveal() {
+            if (!currentDeck.length) return;
+            const key = getCardKey(currentDeck[sel]);
+            revealed[key] = !revealed[key];
+            keepRender();
+        }
+        function keepRender() {
+            const top = document.getElementById('sheet').scrollTop;
+            render();
+            document.getElementById('sheet').scrollTop = top;
+            tb.children[sel] && tb.children[sel].scrollIntoView({ block: 'nearest' });
         }
 
-        function setFilter(filterType) {
-            currentFilter = filterType;
-            
-            const btnAll = document.getElementById('filterAll');
-            const btnInc = document.getElementById('filterIncorrect');
-            const btnUnans = document.getElementById('filterUnanswered');
+        document.addEventListener('keydown', e => {
+            if (e.ctrlKey || e.metaKey || e.altKey) return;
+            const k = e.key;
+            if (k === 'ArrowDown') { e.preventDefault(); move(1); }
+            else if (k === 'ArrowUp') { e.preventDefault(); move(-1); }
+            else if (k === 'o' || k === 'O' || k === 'ㅐ') answer('O');
+            else if (k === 'x' || k === 'X' || k === 'ㅌ') answer('X');
+            else if (k === 'Enter' || k === ' ') { e.preventDefault(); toggleReveal(); }
+            else if (k === 'Delete' || k === 'Backspace') clearAnswer();
+        });
 
-            const activeClass = "px-3 py-1 rounded-lg bg-indigo-50 text-indigo-600 font-bold border border-indigo-200 transition-all";
-            const inactiveClass = "px-3 py-1 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 border border-slate-200 transition-all";
-
-            btnAll.className = filterType === 'ALL' ? activeClass : inactiveClass;
-            btnInc.className = filterType === 'INCORRECT' ? activeClass : inactiveClass;
-            btnUnans.className = filterType === 'UNANSWERED' ? activeClass : inactiveClass;
-
+        function setFilter(type) {
+            currentFilter = type;
+            document.getElementById('fAll').className = type === 'ALL' ? 'on' : '';
+            document.getElementById('fInc').className = type === 'INCORRECT' ? 'on' : '';
+            document.getElementById('fUn').className = type === 'UNANSWERED' ? 'on' : '';
             applyFilter();
         }
-
         function applyFilter() {
-            if (currentFilter === 'ALL') {
-                currentDeck = [...rawDeck];
-            } else if (currentFilter === 'INCORRECT') {
-                currentDeck = rawDeck.filter(card => {
-                    const ans = userAnswers[getCardKey(card)];
-                    return ans && !ans.isCorrect;
-                });
-            } else if (currentFilter === 'UNANSWERED') {
-                currentDeck = rawDeck.filter(card => {
-                    const ans = userAnswers[getCardKey(card)];
-                    return !ans;
-                });
-            }
-
-            currentIndex = 0;
-            renderCard();
+            if (currentFilter === 'ALL') currentDeck = [...rawDeck];
+            else if (currentFilter === 'INCORRECT') currentDeck = rawDeck.filter(c => { const a = userAnswers[getCardKey(c)]; return a && !a.isCorrect; });
+            else currentDeck = rawDeck.filter(c => !userAnswers[getCardKey(c)]);
+            sel = 0;
+            render();
+            document.getElementById('sheet').scrollTop = 0;
         }
-
-        function updateFilterCounts() {
-            document.getElementById('countAll').textContent = rawDeck.length;
-
-            let incCount = 0;
-            let unansCount = 0;
-
-            rawDeck.forEach(card => {
-                const ans = userAnswers[getCardKey(card)];
-                if (!ans) unansCount++;
-                else if (!ans.isCorrect) incCount++;
-            });
-
-            document.getElementById('countIncorrect').textContent = incCount;
-            document.getElementById('countUnanswered').textContent = unansCount;
+        function updateCounts() {
+            let inc = 0, un = 0;
+            rawDeck.forEach(c => { const a = userAnswers[getCardKey(c)]; if (!a) un++; else if (!a.isCorrect) inc++; });
+            document.getElementById('cAll').textContent = rawDeck.length;
+            document.getElementById('cInc').textContent = inc;
+            document.getElementById('cUn').textContent = un;
         }
 
         function handleCSVUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
-
             const reader = new FileReader();
             reader.onload = function(e) {
                 const buffer = e.target.result;
                 let text = "";
-
-                try {
-                    const utf8Decoder = new TextDecoder('utf-8', { fatal: true });
-                    text = utf8Decoder.decode(buffer);
-                } catch (err) {
-                    try {
-                        const eucKrDecoder = new TextDecoder('euc-kr');
-                        text = eucKrDecoder.decode(buffer);
-                    } catch (eucErr) {
-                        const ansiDecoder = new TextDecoder('iso-8859-1');
-                        text = ansiDecoder.decode(buffer);
-                    }
+                try { text = new TextDecoder('utf-8', { fatal: true }).decode(buffer); }
+                catch (err) {
+                    try { text = new TextDecoder('euc-kr').decode(buffer); }
+                    catch (e2) { text = new TextDecoder('iso-8859-1').decode(buffer); }
                 }
-
                 parseCSVData(text);
             };
-            
             reader.readAsArrayBuffer(file);
+            event.target.value = "";
         }
 
         function parseCSVData(text) {
-            const lines = text.split(/\r\n|\n/);
+            const lines = text.replace(/^\uFEFF/, '').split(/\r\n|\n/);
             const parsed = [];
             let isHeader = true;
-
             for (let i = 0; i < lines.length; i++) {
                 const line = lines[i].trim();
                 if (!line) continue;
-
                 const tokens = parseCSVLine(line);
                 if (tokens.length < 2) continue;
-
-                if (isHeader && (tokens[0].includes("지문") || tokens[0].includes("question") || tokens[0].toLowerCase().includes("article"))) {
-                    isHeader = false;
-                    continue;
-                }
+                if (isHeader && (tokens[0].includes("지문") || tokens[0].includes("question") || tokens[0].toLowerCase().includes("article"))) { isHeader = false; continue; }
                 isHeader = false;
-
                 const article = tokens[0] ? tokens[0].trim() : "";
                 const answer = tokens[1] ? tokens[1].trim().toUpperCase() : "O";
-                const reason = tokens[2] ? tokens[2].trim() : "해설이 제공되지 않았습니다.";
-
-                if (article) {
-                    parsed.push({
-                        id: parsed.length + 1,
-                        article,
-                        answer,
-                        reason
-                    });
-                }
+                const reason = tokens[2] ? tokens[2].trim() : "";
+                if (article) parsed.push({ id: parsed.length + 1, article, answer, reason });
             }
-
             if (parsed.length > 0) {
                 rawDeck = parsed;
-                for (let key in userAnswers) delete userAnswers[key];
-                
-                saveDeckToStorage();
-                saveAnswersToStorage();
-
+                for (let k in userAnswers) delete userAnswers[k];
+                for (let k in revealed) delete revealed[k];
+                saveDeckToStorage(); saveAnswersToStorage();
                 setFilter('ALL');
-                alert(`성공적으로 ${parsed.length}개의 OX 문제를 불러왔으며 브라우저에 자동 저장되었습니다!`);
+                alert(`${parsed.length}개 행을 불러왔습니다.`);
             } else {
-                alert("CSV 파일에서 유효한 문제 데이터를 찾지 못했습니다. 템플릿 양식을 확인해 주세요.");
+                alert("유효한 데이터를 찾지 못했습니다. 양식을 확인해 주세요.");
             }
         }
 
@@ -757,13 +534,14 @@
             const link = document.createElement("a");
             const url = URL.createObjectURL(blob);
             link.setAttribute("href", url);
-            link.setAttribute("download", "민법_OX_플래시카드_템플릿.csv");
+            link.setAttribute("download", "template.csv");
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
         }
 
-        renderCard();
+        
+        render();
     </script>
 </body>
 </html>
